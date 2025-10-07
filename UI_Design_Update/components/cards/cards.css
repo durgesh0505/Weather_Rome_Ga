@@ -1,0 +1,65 @@
+/* ===============================================
+   CARDS
+   Card components with neumorphic styling
+   =============================================== */
+
+.card {
+    background: var(--neu-base);
+    border-radius: var(--neu-radius-lg);
+    padding: var(--spacing-lg);
+    transition: all var(--neu-transition-fast);
+    box-shadow:
+        -10px -10px 20px var(--neu-light),
+        10px 10px 20px var(--neu-dark);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        -12px -12px 24px var(--neu-light),
+        12px 12px 24px var(--neu-dark);
+}
+
+.card h1,
+.card h2,
+.card h3,
+.card h4,
+.card h5,
+.card h6 {
+    color: var(--neu-accent);
+    margin-bottom: var(--spacing-sm);
+}
+
+.card p {
+    color: var(--neu-text-dim);
+    margin-bottom: 0;
+}
+
+/* Card Variants */
+.card-flat {
+    box-shadow:
+        -5px -5px 10px var(--neu-light),
+        5px 5px 10px var(--neu-dark);
+}
+
+.card-inset {
+    box-shadow:
+        inset -5px -5px 10px var(--neu-light),
+        inset 5px 5px 10px var(--neu-dark);
+}
+
+.card-header {
+    padding-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--neu-dark);
+}
+
+.card-body {
+    padding: var(--spacing-md) 0;
+}
+
+.card-footer {
+    padding-top: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    border-top: 1px solid var(--neu-dark);
+}

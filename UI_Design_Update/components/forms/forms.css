@@ -1,0 +1,317 @@
+/* ===============================================
+   FORM INPUTS
+   Input, textarea, and select components
+   =============================================== */
+
+/* Base Input */
+.input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: var(--neu-radius-lg);
+    color: var(--neu-text);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all var(--neu-transition-fast);
+    box-shadow:
+        inset 4px 4px 8px var(--neu-dark),
+        inset -4px -4px 8px var(--neu-light);
+}
+
+.input:focus {
+    outline: none;
+    box-shadow:
+        inset 4px 4px 8px var(--neu-dark),
+        inset -4px -4px 8px var(--neu-light),
+        0 0 0 2px var(--neu-accent);
+}
+
+.input::placeholder {
+    color: var(--neu-text-dim);
+}
+
+.input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Textarea */
+.textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: var(--neu-radius-md);
+    box-shadow:
+        inset var(--neu-distance) var(--neu-distance) calc(var(--neu-blur) * 0.5) var(--neu-dark),
+        inset calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) calc(var(--neu-blur) * 0.5) var(--neu-light);
+    color: var(--neu-text);
+    font-family: inherit;
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 100px;
+    transition: all var(--neu-transition-fast);
+}
+
+.textarea:focus {
+    outline: none;
+    box-shadow:
+        inset var(--neu-distance) var(--neu-distance) calc(var(--neu-blur) * 0.5) var(--neu-dark),
+        inset calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) calc(var(--neu-blur) * 0.5) var(--neu-light),
+        0 0 0 2px var(--neu-accent);
+}
+
+.textarea::placeholder {
+    color: var(--neu-text-dim);
+}
+
+/* Select */
+.select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--neu-base);
+    border: none;
+    border-radius: var(--neu-radius-md);
+    box-shadow:
+        calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light),
+        var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark);
+    color: var(--neu-text);
+    font-family: inherit;
+    font-size: 1rem;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+    transition: all var(--neu-transition-fast);
+}
+
+.select:hover {
+    box-shadow:
+        calc(var(--neu-distance) * -1.2) calc(var(--neu-distance) * -1.2) calc(var(--neu-blur) * 1.1) var(--neu-light),
+        calc(var(--neu-distance) * 1.2) calc(var(--neu-distance) * 1.2) calc(var(--neu-blur) * 1.1) var(--neu-dark);
+}
+
+.select:focus {
+    outline: none;
+    box-shadow:
+        calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light),
+        var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark),
+        0 0 0 2px var(--neu-accent);
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+    color: var(--neu-text-dim);
+}
+
+/* Input Sizes */
+.input-sm,
+.select-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.input-lg,
+.select-lg {
+    padding: 1rem 1.25rem;
+    font-size: 1.125rem;
+}
+
+/* ===============================================
+   DATE PICKER
+   Calendar input component
+   =============================================== */
+
+.date-picker {
+    position: relative;
+    width: 100%;
+}
+
+.date-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    color: var(--neu-text);
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow:
+        inset 6px 6px 12px var(--neu-dark),
+        inset -6px -6px 12px var(--neu-light);
+    transition: all 0.2s;
+}
+
+.date-input:focus {
+    outline: none;
+    box-shadow:
+        inset 6px 6px 12px var(--neu-dark),
+        inset -6px -6px 12px var(--neu-light),
+        0 0 0 2px var(--neu-accent);
+}
+
+.date-picker-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.5rem;
+    background: var(--neu-base);
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow:
+        10px 10px 20px var(--neu-dark),
+        -10px -10px 20px var(--neu-light);
+    z-index: 100;
+    display: none;
+}
+
+.date-picker-dropdown.show {
+    display: block;
+}
+
+/* ===============================================
+   DROPDOWN
+   Custom dropdown with single/multiple selection
+   =============================================== */
+
+.dropdown {
+    position: relative;
+    width: 100%;
+}
+
+.dropdown-toggle {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--neu-base);
+    border: none;
+    border-radius: 12px;
+    color: var(--neu-text);
+    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow:
+        6px 6px 12px var(--neu-dark),
+        -6px -6px 12px var(--neu-light);
+    transition: all 0.2s;
+}
+
+.dropdown-toggle:hover {
+    box-shadow:
+        8px 8px 16px var(--neu-dark),
+        -8px -8px 16px var(--neu-light);
+}
+
+.dropdown-toggle:active {
+    box-shadow:
+        inset 3px 3px 6px var(--neu-dark),
+        inset -3px -3px 6px var(--neu-light);
+}
+
+.dropdown-arrow {
+    transition: transform 0.2s;
+}
+
+.dropdown.show .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin-top: 0.5rem;
+    background: var(--neu-base);
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow:
+        10px 10px 20px var(--neu-dark),
+        -10px -10px 20px var(--neu-light);
+    z-index: 100;
+    display: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--neu-text);
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-item.selected {
+    color: var(--neu-accent);
+    font-weight: 500;
+}
+
+/* Dropdown Multiple Selection */
+.dropdown-multi .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+}
+
+.dropdown-multi .dropdown-checkbox-container {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.dropdown-multi .dropdown-item input[type="checkbox"] {
+    display: none;
+}
+
+.dropdown-multi .dropdown-checkbox-label {
+    display: block;
+    width: 20px;
+    height: 20px;
+    background: var(--neu-base);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all var(--neu-transition-fast);
+    box-shadow:
+        inset 3px 3px 6px var(--neu-dark),
+        inset -3px -3px 6px var(--neu-light);
+}
+
+.dropdown-multi .dropdown-checkbox-label::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    color: var(--neu-accent);
+    font-weight: bold;
+    font-size: 12px;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dropdown-multi .dropdown-item input[type="checkbox"]:checked + .dropdown-checkbox-label::after {
+    transform: translate(-50%, -50%) scale(1);
+}

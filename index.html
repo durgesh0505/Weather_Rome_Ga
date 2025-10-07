@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard - Rome, GA</title>
+    <link rel="stylesheet" href="UI_Design_Update/neumorphic-ui.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            font-family: var(--neu-font-family);
+            overflow-x: hidden;
+            background: var(--neu-base);
+        }
+
+        .weather-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: clamp(1rem, 2.5vw, 2.5rem);
+            gap: clamp(1rem, 2vh, 1.5rem);
+            width: 100%;
+            min-height: 100vh;
+            background: var(--neu-base);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: clamp(1rem, 2.5vh, 1.75rem) clamp(1.25rem, 3.5vw, 2.25rem);
+            background: var(--neu-base);
+            border-radius: var(--neu-radius-lg);
+            box-shadow:
+                -10px -10px 20px var(--neu-light),
+                10px 10px 20px var(--neu-dark);
+            margin-bottom: clamp(1.25rem, 2.5vh, 2rem);
+        }
+
+        .location {
+            font-size: clamp(1rem, 2.2vw, 1.5rem);
+            color: var(--neu-accent);
+            margin: 0;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .theme-toggle {
+            background: var(--neu-base);
+            border: none;
+            border-radius: var(--neu-radius-full);
+            width: clamp(2.75rem, 5.5vw, 3.75rem);
+            height: clamp(2.75rem, 5.5vw, 3.75rem);
+            cursor: pointer;
+            font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+            box-shadow:
+                -6px -6px 12px var(--neu-light),
+                6px 6px 12px var(--neu-dark);
+            transition: all var(--neu-transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-toggle:hover {
+            box-shadow:
+                -8px -8px 16px var(--neu-light),
+                8px 8px 16px var(--neu-dark);
+        }
+
+        .theme-toggle:active {
+            box-shadow:
+                inset -4px -4px 8px var(--neu-light),
+                inset 4px 4px 8px var(--neu-dark);
+        }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: minmax(200px, 1fr) minmax(300px, 2fr) minmax(200px, 1fr);
+            gap: clamp(1.5rem, 4vw, 3.5rem);
+            align-items: start;
+        }
+
+        .hourly-section, .current-section, .daily-section {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(0.75rem, 1.5vh, 1rem);
+        }
+
+        .hourly-section, .daily-section {
+            padding: clamp(0.5rem, 1vh, 0.75rem);
+        }
+
+        #hourlyForecast, #dailyForecast {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1rem, 2vh, 1.5rem);
+        }
+
+        .current-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .current-card {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: clamp(2rem, 5vh, 4rem);
+            background: var(--neu-base);
+            border-radius: var(--neu-radius-xl);
+            box-shadow:
+                -12px -12px 24px var(--neu-light),
+                12px 12px 24px var(--neu-dark);
+        }
+
+        .weather-icon {
+            font-size: clamp(4rem, 12vw, 10rem);
+            margin: clamp(0.5rem, 2vh, 1rem) 0;
+            animation: float 4s ease-in-out infinite;
+            line-height: 1;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(5deg);
+            }
+        }
+
+        .current-temp {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 700;
+            color: var(--neu-text);
+            margin: clamp(0.5rem, 1.5vh, 1rem) 0;
+            line-height: 1;
+            letter-spacing: -2px;
+        }
+
+        .feels-like {
+            font-size: clamp(1rem, 2.5vw, 1.5rem);
+            color: var(--neu-text-dim);
+            margin-bottom: clamp(0.75rem, 1.5vh, 1.25rem);
+            font-weight: 400;
+        }
+
+        .weather-description {
+            color: var(--neu-accent);
+            font-size: clamp(1rem, 2.2vw, 1.5rem);
+            margin: clamp(0.5rem, 1vh, 1rem) 0;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .weather-details {
+            display: flex;
+            gap: clamp(1.5rem, 5vw, 4rem);
+            margin-top: clamp(1rem, 2.5vh, 2rem);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: clamp(0.375rem, 1vh, 0.625rem);
+            background: var(--neu-base);
+            padding: clamp(1rem, 2.5vh, 1.5rem) clamp(1.25rem, 3.5vw, 2rem);
+            border-radius: var(--neu-radius-lg);
+            box-shadow:
+                inset -5px -5px 10px var(--neu-light),
+                inset 5px 5px 10px var(--neu-dark);
+            min-width: clamp(5rem, 14vw, 7rem);
+        }
+
+        .detail-label {
+            font-size: clamp(0.625rem, 1.2vw, 0.75rem);
+            color: var(--neu-text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-size: clamp(1.25rem, 3vw, 2rem);
+            font-weight: 700;
+            color: var(--neu-accent);
+            letter-spacing: -0.5px;
+        }
+
+        .hourly-item, .daily-item {
+            background: var(--neu-base);
+            border-radius: var(--neu-radius-lg);
+            padding: clamp(1rem, 2.5vh, 1.5rem) clamp(1.25rem, 3vw, 1.75rem);
+            box-shadow:
+                -8px -8px 16px var(--neu-light),
+                8px 8px 16px var(--neu-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all var(--neu-transition-normal);
+            gap: clamp(1rem, 2.5vw, 1.75rem);
+        }
+
+        .hourly-item:hover, .daily-item:hover {
+            box-shadow:
+                -10px -10px 20px var(--neu-light),
+                10px 10px 20px var(--neu-dark);
+        }
+
+        .hourly-time, .daily-day {
+            font-weight: 600;
+            color: var(--neu-text);
+            font-size: clamp(0.75rem, 1.5vw, 1rem);
+            white-space: nowrap;
+            min-width: fit-content;
+        }
+
+        .daily-date {
+            font-size: clamp(0.625rem, 1.2vw, 0.8rem);
+            color: var(--neu-text-dim);
+            font-weight: 500;
+            margin-left: clamp(0.25rem, 0.5vw, 0.4rem);
+        }
+
+        .hourly-icon, .daily-icon {
+            font-size: clamp(1.25rem, 3vw, 2rem);
+            line-height: 1;
+        }
+
+        .hourly-temp, .daily-temps {
+            font-weight: bold;
+            color: var(--neu-accent);
+            font-size: clamp(0.875rem, 1.8vw, 1.25rem);
+        }
+
+        .daily-temps {
+            display: flex;
+            gap: clamp(0.25rem, 0.5vw, 0.5rem);
+            white-space: nowrap;
+        }
+
+        .temp-high {
+            color: var(--neu-danger);
+        }
+
+        .temp-low {
+            color: var(--neu-accent);
+        }
+
+        .precip-info {
+            font-size: clamp(0.625rem, 1.2vw, 0.75rem);
+            color: var(--neu-text-dim);
+        }
+
+        .section-title {
+            color: var(--neu-text);
+            font-size: clamp(0.75rem, 1.6vw, 0.95rem);
+            font-weight: 700;
+            margin-bottom: clamp(0.75rem, 1.5vh, 1.25rem);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.7;
+        }
+
+        .loading {
+            text-align: center;
+            padding: clamp(1rem, 3vh, 3rem);
+        }
+
+        .loading p {
+            font-size: clamp(0.75rem, 1.5vw, 1rem);
+        }
+
+        .error-message {
+            margin-top: clamp(0.5rem, 1vh, 1rem);
+        }
+
+        .last-updated {
+            text-align: center;
+            color: var(--neu-text-dim);
+            font-size: clamp(0.7rem, 1.3vw, 0.875rem);
+            margin-top: clamp(0.75rem, 1.5vh, 1.25rem);
+            padding: clamp(0.5rem, 1vh, 0.75rem);
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1400px) {
+            .weather-grid {
+                grid-template-columns: minmax(180px, 1fr) minmax(250px, 1.8fr) minmax(180px, 1fr);
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .weather-grid {
+                grid-template-columns: minmax(150px, 1fr) minmax(200px, 1.5fr) minmax(150px, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .weather-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto;
+                gap: clamp(0.75rem, 2vh, 1.5rem);
+            }
+
+            .current-section {
+                order: -1;
+            }
+
+            .hourly-section, .daily-section {
+                max-height: 40vh;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .weather-container {
+                padding: clamp(0.5rem, 3vw, 1rem);
+            }
+
+            .header {
+                flex-direction: row;
+                gap: clamp(0.5rem, 2vw, 1rem);
+            }
+
+            .weather-details {
+                gap: clamp(1rem, 5vw, 2rem);
+            }
+        }
+
+        @media (min-height: 900px) {
+            .weather-grid {
+                max-height: 85vh;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="weather-container">
+        <div class="header">
+            <p class="location">Rome, GA 30165</p>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                🌙
+            </button>
+        </div>
+
+        <div id="errorContainer"></div>
+
+        <div class="weather-grid" id="weatherContent">
+            <!-- Hourly Forecast (Left) -->
+            <div class="hourly-section">
+                <h2 class="section-title">Next 5 Hours</h2>
+                <div id="hourlyForecast">
+                    <div class="loading">
+                        <div class="spinner spinner-lg"></div>
+                        <p>Loading hourly forecast...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Current Weather (Center) -->
+            <div class="current-section">
+                <div class="current-card">
+                    <div id="currentWeather">
+                        <div class="loading">
+                            <div class="spinner spinner-lg"></div>
+                            <p>Loading current weather...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Forecast (Right) -->
+            <div class="daily-section">
+                <h2 class="section-title">Next 5 Days</h2>
+                <div id="dailyForecast">
+                    <div class="loading">
+                        <div class="spinner spinner-lg"></div>
+                        <p>Loading daily forecast...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="last-updated" id="lastUpdated"></div>
+    </div>
+
+    <script src="weather-icons.js"></script>
+    <script src="weather.js"></script>
+</body>
+</html>

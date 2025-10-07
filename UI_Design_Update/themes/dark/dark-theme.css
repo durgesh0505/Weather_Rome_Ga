@@ -1,0 +1,83 @@
+/* ===============================================
+   DARK THEME
+   Dark mode color overrides
+   =============================================== */
+
+/* Automatic dark mode based on OS/browser preference */
+/* Only applies when no manual data-theme attribute is set on body/html */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        /* Base Colors */
+        --neu-base: #2c2c2c;
+        --neu-dark: rgba(0, 0, 0, 0.4);
+        --neu-light: rgba(255, 255, 255, 0.05);
+
+        /* Accent Colors (same as light) */
+        --neu-accent: #4a9eff;
+        --neu-success: #26d07c;
+        --neu-warning: #f5a623;
+        --neu-danger: #f56565;
+
+        /* Text Colors */
+        --neu-text: rgba(255, 255, 255, 0.95);
+        --neu-text-dim: rgba(255, 255, 255, 0.6);
+    }
+
+    body:not([data-theme]) {
+        background: #2c2c2c;
+        color: rgba(255, 255, 255, 0.95);
+    }
+}
+
+/* Manual light mode override (data-theme attribute takes precedence) */
+[data-theme="light"] {
+    /* Base Colors - Light Theme */
+    --neu-base: #e0e5ec;
+    --neu-dark: rgba(163, 177, 198, 0.6);
+    --neu-light: rgba(255, 255, 255, 0.9);
+
+    /* Accent Colors (same as dark) */
+    --neu-accent: #4a9eff;
+    --neu-success: #26d07c;
+    --neu-warning: #f5a623;
+    --neu-danger: #f56565;
+
+    /* Text Colors - Light Theme */
+    --neu-text: rgba(0, 0, 0, 0.87);
+    --neu-text-dim: rgba(0, 0, 0, 0.6);
+}
+
+body[data-theme="light"] {
+    background: #e0e5ec;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+/* Manual dark mode override (data-theme attribute takes precedence) */
+[data-theme="dark"] {
+    /* Base Colors */
+    --neu-base: #2c2c2c;
+    --neu-dark: rgba(0, 0, 0, 0.4);
+    --neu-light: rgba(255, 255, 255, 0.05);
+
+    /* Accent Colors (same as light) */
+    --neu-accent: #4a9eff;
+    --neu-success: #26d07c;
+    --neu-warning: #f5a623;
+    --neu-danger: #f56565;
+
+    /* Text Colors */
+    --neu-text: rgba(255, 255, 255, 0.95);
+    --neu-text-dim: rgba(255, 255, 255, 0.6);
+
+    /* Text Color Aliases */
+    --neu-text-primary: rgba(255, 255, 255, 0.95);
+    --neu-text-secondary: rgba(255, 255, 255, 0.6);
+
+    /* Surface rim for dark theme */
+    --neu-surface-rim: rgba(255, 255, 255, 0.02);
+}
+
+body[data-theme="dark"] {
+    background: #2c2c2c;
+    color: rgba(255, 255, 255, 0.95);
+}

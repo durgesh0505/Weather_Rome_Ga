@@ -1,0 +1,269 @@
+/* ===================================
+   PHYSICS-BASED ANIMATIONS
+   Natural Movement & Spring Dynamics
+   =================================== */
+
+:root {
+    /* SPRING PHYSICS CURVES */
+    --spring-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --spring-snappy: cubic-bezier(0.175, 0.885, 0.32, 1.4);
+    --spring-gentle: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --spring-exit: cubic-bezier(0.4, 0, 1, 1);
+
+    /* PHYSICS PARAMETERS */
+    --physics-tension: 300;
+    --physics-friction: 30;
+    --physics-mass: 1;
+
+    /* ANIMATION DURATIONS */
+    --anim-instant: 0.08s;
+    --anim-fast: 0.2s;
+    --anim-normal: 0.3s;
+    --anim-slow: 0.5s;
+    --anim-extra-slow: 0.8s;
+}
+
+/* ===================================
+   SPRING ANIMATION CLASSES
+   =================================== */
+
+/* Gentle Spring - Smooth, natural movement */
+.spring-gentle {
+    transition: all var(--anim-normal) var(--spring-gentle);
+}
+
+/* Bouncy Spring - Playful overshoot effect */
+.spring-bounce {
+    transition: all var(--anim-slow) var(--spring-bounce);
+}
+
+/* Snappy Spring - Quick, responsive movement */
+.spring-snappy {
+    transition: all var(--anim-fast) var(--spring-snappy);
+}
+
+/* Exit Spring - Quick departure */
+.spring-exit {
+    transition: all var(--anim-fast) var(--spring-exit);
+}
+
+/* ===================================
+   PHYSICS-BASED HOVER EFFECTS
+   =================================== */
+
+/* Lift Effect - Object rising from surface */
+.physics-lift {
+    transition: transform var(--anim-normal) var(--spring-gentle);
+}
+
+.physics-lift:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+
+/* Float Effect - Gentle floating motion */
+.physics-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-6px); }
+}
+
+/* Pulse Effect - Breathing animation */
+.physics-pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Wobble Effect - Playful shake */
+.physics-wobble:hover {
+    animation: wobble 0.6s ease-in-out;
+}
+
+@keyframes wobble {
+    0% { transform: translateX(0); }
+    15% { transform: translateX(-25px) rotate(-5deg); }
+    30% { transform: translateX(20px) rotate(3deg); }
+    45% { transform: translateX(-15px) rotate(-3deg); }
+    60% { transform: translateX(10px) rotate(2deg); }
+    75% { transform: translateX(-5px) rotate(-1deg); }
+    100% { transform: translateX(0); }
+}
+
+/* ===================================
+   MOMENTUM & INERTIA EFFECTS
+   =================================== */
+
+/* Momentum Preservation - Natural physics response */
+.physics-momentum {
+    will-change: transform;
+    transition: transform var(--anim-slow) var(--spring-bounce);
+}
+
+.physics-momentum:active {
+    transform: scale(0.95);
+    transition: transform var(--anim-instant) var(--spring-exit);
+}
+
+/* Elastic Effect - Rubber-band physics */
+.physics-elastic:hover {
+    animation: elastic 0.6s ease-out;
+}
+
+@keyframes elastic {
+    0% { transform: scale(1); }
+    20% { transform: scale(1.1); }
+    40% { transform: scale(0.95); }
+    60% { transform: scale(1.05); }
+    80% { transform: scale(0.98); }
+    100% { transform: scale(1); }
+}
+
+/* ===================================
+   TACTILE FEEDBACK ANIMATIONS
+   =================================== */
+
+/* Ripple Effect - Water-like interaction feedback */
+.physics-ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.physics-ripple::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease-out, height 0.6s ease-out;
+    pointer-events: none;
+}
+
+.physics-ripple:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Energy Burst - Particle-like feedback */
+.physics-burst:active {
+    animation: energyBurst 0.4s ease-out;
+}
+
+@keyframes energyBurst {
+    0% {
+        box-shadow:
+            0 0 0 0 rgba(74, 158, 255, 0.7),
+            0 0 0 0 rgba(74, 158, 255, 0.4);
+    }
+    50% {
+        box-shadow:
+            0 0 0 10px rgba(74, 158, 255, 0),
+            0 0 0 20px rgba(74, 158, 255, 0);
+    }
+    100% {
+        box-shadow:
+            0 0 0 0 rgba(74, 158, 255, 0),
+            0 0 0 0 rgba(74, 158, 255, 0);
+    }
+}
+
+/* ===================================
+   QUANTUM SURFACE EFFECTS
+   =================================== */
+
+/* Material Fluctuation - Atomic-level animation */
+.physics-quantum {
+    animation: quantum-fluctuation 4s ease-in-out infinite;
+}
+
+@keyframes quantum-fluctuation {
+    0%, 100% {
+        filter: brightness(1) contrast(1);
+        transform: scale(1);
+    }
+    25% {
+        filter: brightness(1.01) contrast(1.02);
+        transform: scale(1.001);
+    }
+    50% {
+        filter: brightness(0.99) contrast(0.98);
+        transform: scale(0.999);
+    }
+    75% {
+        filter: brightness(1.02) contrast(1.01);
+        transform: scale(1.002);
+    }
+}
+
+/* Molecular Vibration - Subtle material movement */
+.physics-vibrate:hover {
+    animation: vibrate 0.3s linear infinite;
+}
+
+@keyframes vibrate {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-1px); }
+    75% { transform: translateX(1px); }
+}
+
+/* ===================================
+   PERFORMANCE OPTIMIZATIONS
+   =================================== */
+
+/* GPU Acceleration */
+.physics-accelerated {
+    transform: translateZ(0);
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .spring-gentle,
+    .spring-bounce,
+    .spring-snappy,
+    .spring-exit,
+    .physics-lift,
+    .physics-momentum,
+    .physics-ripple {
+        transition: none;
+        animation: none;
+    }
+
+    .physics-float,
+    .physics-pulse,
+    .physics-quantum {
+        animation: none;
+    }
+}
+
+/* ===================================
+   UTILITY CLASSES
+   =================================== */
+
+/* Animation Controls */
+.physics-paused {
+    animation-play-state: paused;
+}
+
+.physics-delayed {
+    animation-delay: 0.2s;
+}
+
+.physics-fast {
+    animation-duration: 0.5s;
+}
+
+.physics-slow {
+    animation-duration: 2s;
+}

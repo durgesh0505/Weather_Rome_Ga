@@ -1,0 +1,236 @@
+/* ===============================================
+   CONTROLS
+   Checkboxes, radios, toggles, sliders, progress
+   =============================================== */
+
+/* Checkboxes */
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+}
+
+.checkbox-container {
+    position: relative;
+}
+
+.checkbox {
+    display: none;
+}
+
+.checkbox-label {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: var(--neu-base);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all var(--neu-transition-fast);
+    box-shadow:
+        inset 4px 4px 8px var(--neu-dark),
+        inset -4px -4px 8px var(--neu-light);
+}
+
+.checkbox-label::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    color: var(--neu-accent);
+    font-weight: bold;
+    font-size: 14px;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.checkbox:checked + .checkbox-label::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Radio Buttons */
+.radio-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+}
+
+.radio-container {
+    position: relative;
+}
+
+.radio {
+    display: none;
+}
+
+.radio-label {
+    display: block;
+    width: 24px;
+    height: 24px;
+    background: var(--neu-base);
+    border-radius: var(--neu-radius-full);
+    cursor: pointer;
+    position: relative;
+    transition: all var(--neu-transition-fast);
+    box-shadow:
+        inset 4px 4px 8px var(--neu-dark),
+        inset -4px -4px 8px var(--neu-light);
+}
+
+.radio-label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 8px;
+    height: 8px;
+    background: var(--neu-accent);
+    border-radius: var(--neu-radius-full);
+    transition: transform var(--neu-transition-fast);
+    box-shadow: 0 0 8px var(--neu-accent);
+}
+
+.radio:checked + .radio-label::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Toggle Switch */
+.toggle-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.toggle-container {
+    position: relative;
+}
+
+.toggle {
+    display: none;
+}
+
+.toggle-label {
+    display: block;
+    width: 60px;
+    height: 32px;
+    background: var(--neu-base);
+    border-radius: var(--neu-radius-full);
+    cursor: pointer;
+    position: relative;
+    transition: all var(--neu-transition-normal);
+    box-shadow:
+        inset 6px 6px 12px var(--neu-dark),
+        inset -6px -6px 12px var(--neu-light);
+}
+
+.toggle-label::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    background: var(--neu-base);
+    border-radius: var(--neu-radius-full);
+    transition: all var(--neu-transition-normal);
+    box-shadow:
+        -4px -4px 8px var(--neu-light),
+        4px 4px 8px var(--neu-dark);
+}
+
+.toggle:checked + .toggle-label {
+    background: var(--neu-accent);
+}
+
+.toggle:checked + .toggle-label::after {
+    transform: translateX(28px);
+}
+
+/* Slider */
+.slider {
+    width: 100%;
+    height: 6px;
+    background: var(--neu-base);
+    border-radius: 3px;
+    box-shadow:
+        inset 4px 4px 8px var(--neu-dark),
+        inset -4px -4px 8px var(--neu-light);
+    appearance: none;
+    cursor: pointer;
+}
+
+.slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--neu-base);
+    border-radius: var(--neu-radius-full);
+    cursor: pointer;
+    box-shadow:
+        -4px -4px 8px var(--neu-light),
+        4px 4px 8px var(--neu-dark);
+    transition: all var(--neu-transition-fast);
+}
+
+.slider::-webkit-slider-thumb:hover {
+    box-shadow:
+        -6px -6px 12px var(--neu-light),
+        6px 6px 12px var(--neu-dark);
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--neu-base);
+    border-radius: var(--neu-radius-full);
+    cursor: pointer;
+    border: none;
+    box-shadow:
+        -4px -4px 8px var(--neu-light),
+        4px 4px 8px var(--neu-dark);
+    transition: all var(--neu-transition-fast);
+}
+
+.slider::-moz-range-thumb:hover {
+    box-shadow:
+        -6px -6px 12px var(--neu-light),
+        6px 6px 12px var(--neu-dark);
+}
+
+/* Progress Bar */
+.progress {
+    width: 100%;
+    height: 8px;
+    background: var(--neu-base);
+    border-radius: 4px;
+    box-shadow:
+        inset 4px 4px 8px var(--neu-dark),
+        inset -4px -4px 8px var(--neu-light);
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neu-accent), var(--neu-success));
+    border-radius: 4px;
+    transition: width var(--neu-transition-normal);
+}
+
+.progress-fill-success {
+    background: var(--neu-success);
+}
+
+.progress-fill-warning {
+    background: var(--neu-warning);
+}
+
+.progress-fill-danger {
+    background: var(--neu-danger);
+}

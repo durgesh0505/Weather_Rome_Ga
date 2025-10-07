@@ -1,0 +1,425 @@
+/* ===============================================
+   DATA DISPLAY
+   Lists, tables, avatars
+   =============================================== */
+
+/* Lists */
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-item {
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+    border-radius: var(--neu-radius-md);
+    background: var(--neu-base);
+    box-shadow:
+        calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light),
+        var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark);
+    transition: all var(--neu-transition-fast);
+}
+
+.list-item:hover {
+    box-shadow:
+        calc(var(--neu-distance) * -1.2) calc(var(--neu-distance) * -1.2) calc(var(--neu-blur) * 1.1) var(--neu-light),
+        calc(var(--neu-distance) * 1.2) calc(var(--neu-distance) * 1.2) calc(var(--neu-blur) * 1.1) var(--neu-dark);
+}
+
+.list-item.active {
+    border-left: 4px solid var(--neu-accent);
+}
+
+/* Tables */
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 var(--spacing-sm);
+}
+
+.table th,
+.table td {
+    padding: var(--spacing-md);
+    text-align: left;
+}
+
+.table th {
+    font-weight: 600;
+    color: var(--neu-text);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.table tbody tr {
+    background: var(--neu-base);
+    box-shadow:
+        calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light),
+        var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark);
+    transition: all var(--neu-transition-fast);
+}
+
+.table tbody tr:hover {
+    box-shadow:
+        calc(var(--neu-distance) * -1.2) calc(var(--neu-distance) * -1.2) calc(var(--neu-blur) * 1.1) var(--neu-light),
+        calc(var(--neu-distance) * 1.2) calc(var(--neu-distance) * 1.2) calc(var(--neu-blur) * 1.1) var(--neu-dark);
+}
+
+.table td {
+    color: var(--neu-text-dim);
+}
+
+/* Avatars */
+.avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: var(--neu-radius-full);
+    background: var(--neu-base);
+    box-shadow:
+        inset var(--neu-distance) var(--neu-distance) calc(var(--neu-blur) * 0.5) var(--neu-dark),
+        inset calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) calc(var(--neu-blur) * 0.5) var(--neu-light);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--neu-text);
+    font-size: 1.5rem;
+    font-weight: 600;
+    overflow: hidden;
+}
+
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar.sm {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+}
+
+.avatar.lg {
+    width: 96px;
+    height: 96px;
+    font-size: 2rem;
+}
+
+.avatar.xl {
+    width: 128px;
+    height: 128px;
+    font-size: 2.5rem;
+}
+
+/* Avatar Group */
+.avatar-group {
+    display: flex;
+    align-items: center;
+}
+
+.avatar-group .avatar {
+    margin-left: -12px;
+    border: 3px solid var(--neu-base);
+}
+
+.avatar-group .avatar:first-child {
+    margin-left: 0;
+}
+
+/* Accordion */
+.accordion-item {
+    margin-bottom: var(--spacing-sm);
+}
+
+.accordion-header {
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    background: var(--neu-base);
+    border: none;
+    border-radius: var(--neu-radius-md);
+    box-shadow:
+        calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light),
+        var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark);
+    color: var(--neu-text);
+    cursor: pointer;
+    text-align: left;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all var(--neu-transition-fast);
+}
+
+.accordion-header:hover {
+    box-shadow:
+        calc(var(--neu-distance) * -1.2) calc(var(--neu-distance) * -1.2) calc(var(--neu-blur) * 1.1) var(--neu-light),
+        calc(var(--neu-distance) * 1.2) calc(var(--neu-distance) * 1.2) calc(var(--neu-blur) * 1.1) var(--neu-dark);
+}
+
+.accordion-icon {
+    transition: transform var(--neu-transition-fast);
+}
+
+.accordion-header.open .accordion-icon {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--neu-transition-normal);
+    background: var(--neu-base);
+    border-radius: 0 0 var(--neu-radius-md) var(--neu-radius-md);
+}
+
+.accordion-content.open {
+    padding: var(--spacing-md) var(--spacing-lg);
+    max-height: 500px;
+    box-shadow:
+        inset calc(var(--neu-distance) * 0.5) calc(var(--neu-distance) * 0.5) calc(var(--neu-blur) * 0.3) var(--neu-dark),
+        inset calc(var(--neu-distance) * -0.5) calc(var(--neu-distance) * -0.5) calc(var(--neu-blur) * 0.3) var(--neu-light);
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--neu-base);
+    padding: var(--spacing-xl);
+    border-radius: var(--neu-radius-lg);
+    box-shadow:
+        calc(var(--neu-distance) * -2) calc(var(--neu-distance) * -2) calc(var(--neu-blur) * 2) var(--neu-light),
+        calc(var(--neu-distance) * 2) calc(var(--neu-distance) * 2) calc(var(--neu-blur) * 2) var(--neu-dark);
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--neu-dark);
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--neu-text);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--neu-text);
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--neu-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--neu-transition-fast);
+}
+
+.modal-close:hover {
+    background: var(--neu-base);
+    box-shadow:
+        calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light),
+        var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark);
+}
+
+.modal-body {
+    margin-bottom: var(--spacing-md);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--neu-dark);
+}
+
+/* ===============================================
+   CALENDAR
+   Date selection calendar component
+   =============================================== */
+
+.calendar {
+    background: var(--neu-base);
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow:
+        10px 10px 20px var(--neu-dark),
+        -10px -10px 20px var(--neu-light);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-header button {
+    background: var(--neu-base);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: var(--neu-text);
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        6px 6px 12px var(--neu-dark),
+        -6px -6px 12px var(--neu-light);
+    transition: all 0.2s;
+}
+
+.calendar-header button:hover {
+    box-shadow:
+        8px 8px 16px var(--neu-dark),
+        -8px -8px 16px var(--neu-light);
+}
+
+.calendar-header button:active {
+    box-shadow:
+        inset 3px 3px 6px var(--neu-dark),
+        inset -3px -3px 6px var(--neu-light);
+}
+
+.calendar-header span {
+    font-weight: 600;
+    color: var(--neu-text);
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+}
+
+.calendar-day {
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--neu-text-dim);
+    padding: 0.5rem;
+}
+
+.calendar-date {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: var(--neu-text);
+    background: var(--neu-base);
+    box-shadow:
+        4px 4px 8px var(--neu-dark),
+        -4px -4px 8px var(--neu-light);
+    transition: all 0.2s;
+}
+
+.calendar-date:hover {
+    box-shadow:
+        6px 6px 12px var(--neu-dark),
+        -6px -6px 12px var(--neu-light);
+}
+
+.calendar-date.active {
+    color: var(--neu-accent);
+    box-shadow:
+        inset 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.calendar-date.today {
+    font-weight: 600;
+    border: 2px solid var(--neu-accent);
+}
+
+.calendar-date.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.calendar-date.disabled:hover {
+    box-shadow:
+        4px 4px 8px var(--neu-dark),
+        -4px -4px 8px var(--neu-light);
+}
+
+/* ===============================================
+   LIVE TIME DISPLAY
+   Real-time clock component (Avalonia Style)
+   =============================================== */
+
+.live-time {
+    background: var(--neu-base);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow:
+        10px 10px 20px var(--neu-dark),
+        -10px -10px 20px var(--neu-light);
+    text-align: center;
+}
+
+.live-time-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--neu-text-dim);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.live-time-display {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--neu-text);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.05em;
+}
+
+.live-time-seconds {
+    color: var(--neu-accent);
+}

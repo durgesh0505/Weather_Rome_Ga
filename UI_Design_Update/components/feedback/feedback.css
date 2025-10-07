@@ -1,0 +1,196 @@
+/* ===============================================
+   FEEDBACK
+   Badges, alerts, toasts, tooltips
+   =============================================== */
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--neu-accent);
+    color: white;
+    border-radius: var(--neu-radius-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    box-shadow:
+        calc(var(--neu-distance) * -0.5) calc(var(--neu-distance) * -0.5) calc(var(--neu-blur) * 0.5) rgba(255, 255, 255, 0.1),
+        calc(var(--neu-distance) * 0.5) calc(var(--neu-distance) * 0.5) calc(var(--neu-blur) * 0.5) rgba(0, 0, 0, 0.3);
+}
+
+.badge.success {
+    background: var(--neu-success);
+}
+
+.badge.warning {
+    background: var(--neu-warning);
+}
+
+.badge.danger {
+    background: var(--neu-danger);
+}
+
+.badge-outline {
+    background: transparent;
+    color: var(--neu-text);
+    border: 2px solid var(--neu-accent);
+    box-shadow: none;
+}
+
+.badge-outline.success {
+    border-color: var(--neu-success);
+    color: var(--neu-success);
+}
+
+.badge-outline.warning {
+    border-color: var(--neu-warning);
+    color: var(--neu-warning);
+}
+
+.badge-outline.danger {
+    border-color: var(--neu-danger);
+    color: var(--neu-danger);
+}
+
+/* Alerts */
+.alert {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--neu-radius-md);
+    box-shadow:
+        calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light),
+        var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark);
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.alert.info {
+    background: var(--neu-accent);
+    color: white;
+}
+
+.alert.success {
+    background: var(--neu-success);
+    color: white;
+}
+
+.alert.warning {
+    background: var(--neu-warning);
+    color: white;
+}
+
+.alert.error {
+    background: var(--neu-danger);
+    color: white;
+}
+
+.alert-title {
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+}
+
+.alert-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.25rem;
+    opacity: 0.8;
+    transition: opacity var(--neu-transition-fast);
+}
+
+.alert-close:hover {
+    opacity: 1;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--neu-radius-full);
+    background: conic-gradient(from 0deg, var(--neu-accent), transparent);
+    animation: spin 1s linear infinite;
+    position: relative;
+}
+
+.spinner::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    background: var(--neu-base);
+    border-radius: var(--neu-radius-full);
+}
+
+.spinner-sm {
+    width: 24px;
+    height: 24px;
+}
+
+.spinner-sm::before {
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+}
+
+.spinner-lg {
+    width: 64px;
+    height: 64px;
+}
+
+.spinner-lg::before {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+}
+
+/* Tooltips */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--neu-base);
+    color: var(--neu-text);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--neu-radius-sm);
+    white-space: nowrap;
+    font-size: 0.875rem;
+    box-shadow:
+        -4px -4px 8px var(--neu-light),
+        4px 4px 8px var(--neu-dark);
+    transition: opacity var(--neu-transition-fast), visibility var(--neu-transition-fast);
+    z-index: 1000;
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.tooltip-text::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--neu-base);
+}

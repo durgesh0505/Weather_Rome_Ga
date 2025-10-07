@@ -1,0 +1,225 @@
+/* ===============================================
+   BUTTONS - PHYSICS-BASED NEUMORPHIC
+   Button components with spring physics animations
+   =============================================== */
+
+/* Base Button with Physics */
+.btn {
+    padding: var(--neu-space-md) var(--neu-space-lg);
+    border: none;
+    border-radius: var(--neu-radius);
+    font-family: var(--neu-font-family);
+    font-size: var(--neu-font-size-base);
+    font-weight: 500;
+    color: var(--neu-text-primary);
+    background: var(--neu-base);
+    cursor: pointer;
+    position: relative;
+    will-change: transform, box-shadow;
+
+    /* SPRING PHYSICS - Natural object behavior */
+    transition:
+        transform 0.4s var(--spring-bounce),
+        box-shadow 0.3s var(--spring-gentle),
+        filter 0.2s ease;
+
+    /* TRUE NEUMORPHIC SURFACE EMERGENCE */
+    box-shadow:
+        calc(-1 * var(--neu-distance)) calc(-1 * var(--neu-distance)) var(--neu-blur) var(--neu-light),
+        var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark),
+        inset 0 1px 0 var(--neu-surface-rim); /* Surface unity */
+}
+
+/* HOVER - Enhanced surface emergence */
+.btn:hover {
+    transform: translateY(-1px) scale(1.01);
+    filter: brightness(1.03);
+    box-shadow:
+        calc(-1.5 * var(--neu-distance)) calc(-1.5 * var(--neu-distance)) calc(1.5 * var(--neu-blur)) var(--neu-light),
+        calc(1.5 * var(--neu-distance)) calc(1.5 * var(--neu-distance)) calc(1.5 * var(--neu-blur)) var(--neu-dark),
+        inset 0 1px 0 var(--neu-surface-rim);
+}
+
+/* ACTIVE - Physical button press with spring compression */
+.btn:active {
+    transform: translateY(1px) scale(0.98);
+    transition:
+        transform 0.1s var(--spring-exit),
+        box-shadow 0.1s ease;
+
+    /* PRESSED INSET EFFECT - Button compressed into surface */
+    box-shadow:
+        inset var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark),
+        inset calc(-1 * var(--neu-distance)) calc(-1 * var(--neu-distance)) var(--neu-blur) var(--neu-light),
+        0 0 8px rgba(74, 158, 255, 0.4); /* Energy feedback */
+}
+
+/* SPRING RELEASE - Return animation after press */
+.btn:not(:active) {
+    transition:
+        transform 0.5s var(--spring-snappy),
+        box-shadow 0.4s var(--spring-gentle);
+}
+
+/* DISABLED STATE */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(0.3);
+}
+
+/* ===================================
+   BUTTON VARIANTS
+   =================================== */
+
+/* Primary Button */
+.btn-primary {
+    background: linear-gradient(135deg, var(--neu-accent), var(--color-primary-variant));
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--color-primary-variant), var(--neu-accent));
+}
+
+/* Success Button */
+.btn-success {
+    background: linear-gradient(135deg, var(--neu-success), hsl(160, 80%, 45%));
+    color: white;
+}
+
+/* Warning Button */
+.btn-warning {
+    background: linear-gradient(135deg, var(--neu-warning), hsl(35, 95%, 55%));
+    color: white;
+}
+
+/* Danger Button */
+.btn-danger {
+    background: linear-gradient(135deg, var(--neu-danger), #ef4444);
+    color: white;
+}
+
+/* ===================================
+   ICON BUTTONS
+   =================================== */
+
+/* Icon Button with Enhanced Physics */
+.icon-btn {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--neu-font-size-lg);
+    background: var(--neu-base);
+    border: none;
+    color: var(--neu-text-primary);
+    cursor: pointer;
+    position: relative;
+    will-change: transform, box-shadow;
+
+    /* Enhanced physics for circular buttons */
+    transition:
+        transform 0.4s var(--spring-snappy),
+        box-shadow 0.3s var(--spring-gentle);
+
+    box-shadow:
+        calc(-1 * var(--neu-distance)) calc(-1 * var(--neu-distance)) var(--neu-blur) var(--neu-light),
+        var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark),
+        inset 0 1px 0 var(--neu-surface-rim);
+}
+
+.icon-btn:hover {
+    transform: translateY(-3px) scale(1.05) rotate(2deg);
+    filter: brightness(1.08);
+    box-shadow:
+        calc(-1.5 * var(--neu-distance)) calc(-1.5 * var(--neu-distance)) calc(1.5 * var(--neu-blur)) var(--neu-light),
+        calc(1.5 * var(--neu-distance)) calc(1.5 * var(--neu-distance)) calc(1.5 * var(--neu-blur)) var(--neu-dark),
+        inset 0 1px 0 var(--neu-surface-rim);
+}
+
+.icon-btn:active {
+    transform: translateY(1px) scale(0.95) rotate(-1deg);
+    transition: transform 0.08s var(--spring-exit);
+    box-shadow:
+        inset var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark),
+        inset calc(-1 * var(--neu-distance)) calc(-1 * var(--neu-distance)) var(--neu-blur) var(--neu-light);
+}
+
+/* ===================================
+   BUTTON SIZES
+   =================================== */
+
+/* Small Button */
+.btn-sm {
+    padding: var(--neu-space-sm) var(--neu-space-md);
+    font-size: var(--neu-font-size-sm);
+}
+
+/* Large Button */
+.btn-lg {
+    padding: var(--neu-space-lg) var(--neu-space-xl);
+    font-size: var(--neu-font-size-lg);
+}
+
+/* Small Icon Button */
+.icon-btn-sm {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+}
+
+/* Large Icon Button */
+.icon-btn-lg {
+    width: 64px;
+    height: 64px;
+    font-size: 1.5rem;
+}
+
+/* ===================================
+   BUTTON GROUPS
+   =================================== */
+
+.button-group {
+    display: flex;
+    gap: var(--neu-space-sm);
+}
+
+.button-group--vertical {
+    flex-direction: column;
+}
+
+.button-group .btn:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.button-group .btn:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.button-group .btn:not(:first-child):not(:last-child) {
+    border-radius: 0;
+}
+
+/* ===================================
+   THEME-SPECIFIC OVERRIDES
+   =================================== */
+
+/* Ensure default buttons have correct text color in light theme */
+[data-theme="light"] .btn {
+    color: var(--neu-text-primary);
+}
+
+/* Colored buttons maintain white text for contrast */
+[data-theme="light"] .btn-primary,
+[data-theme="light"] .btn-success,
+[data-theme="light"] .btn-warning,
+[data-theme="light"] .btn-danger {
+    color: white;
+}
