@@ -162,6 +162,9 @@ function updateCurrentWeather(data) {
 
     const icon = getWeatherIcon(shortForecast);
 
+    // Update favicon with current weather icon
+    updateFavicon(icon);
+
     currentWeatherDiv.innerHTML = `
         <div class="weather-icon">${icon}</div>
         <div class="current-temp">${temperature}°F</div>
@@ -273,6 +276,27 @@ function updateLastUpdated() {
         day: 'numeric'
     });
     lastUpdatedText.textContent = `Last updated: ${timeString}`;
+}
+
+// Update favicon with weather icon
+function updateFavicon(iconEmoji) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    const ctx = canvas.getContext('2d');
+
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw emoji
+    ctx.font = '48px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(iconEmoji, 32, 32);
+
+    // Convert to data URL and set as favicon
+    const faviconLink = document.getElementById('favicon');
+    faviconLink.href = canvas.toDataURL('image/png');
 }
 
 // Main update function
