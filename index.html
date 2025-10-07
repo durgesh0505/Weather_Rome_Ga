@@ -363,9 +363,14 @@
     <div class="weather-container">
         <div class="header">
             <p class="location">Rome, GA 30165</p>
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                🌙
-            </button>
+            <div style="display: flex; gap: clamp(0.75rem, 1.5vw, 1rem);">
+                <button class="theme-toggle" id="fullscreenToggle" aria-label="Toggle fullscreen">
+                    ⛶
+                </button>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                    🌙
+                </button>
+            </div>
         </div>
 
         <div id="errorContainer"></div>
@@ -406,7 +411,11 @@
             </div>
         </div>
 
-        <div class="last-updated" id="lastUpdated"></div>
+        <div class="last-updated" id="lastUpdated">
+            <span id="lastUpdatedText"></span>
+            <span style="margin: 0 clamp(0.5rem, 1vw, 1rem);">|</span>
+            <span>Created by Chirag Prajapati</span>
+        </div>
     </div>
 
     <script src="weather-icons.js"></script>

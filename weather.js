@@ -178,33 +178,40 @@ function updateCurrentWeather(data) {
     `;
 }
 
-// Update hourly forecast (next 5 hours, 2 hours apart)
+// Update hourly forecast (next 5 hours, every hour)
 function updateHourlyForecast(data) {
     const hourlyForecastDiv = document.getElementById('hourlyForecast');
     const hourly = data.hourly;
+    const now = new Date();
 
     let hoursHTML = '';
+    let count = 0;
 
-    // Get 5 forecasts, 2 hours apart (indices: 0, 2, 4, 6, 8)
-    // Starting from current hour, then every 2 hours
-    for (let i = 0; i <= 8; i += 2) {
+    // Find forecasts that are in the future (start from next hour)
+    for (let i = 0; i < hourly.length && count < 5; i++) {
         const period = hourly[i];
-        const time = period.startTime;
-        const temp = period.temperature;
-        const shortForecast = period.shortForecast;
-        const precipProb = period.probabilityOfPrecipitation.value || 0;
-        const icon = getWeatherIcon(shortForecast);
+        const forecastTime = new Date(period.startTime);
 
-        hoursHTML += `
-            <div class="hourly-item">
-                <span class="hourly-time">${formatTime(time)}</span>
-                <span class="hourly-icon">${icon}</span>
-                <div style="text-align: right;">
-                    <div class="hourly-temp">${temp}°F</div>
-                    <div class="precip-info">${precipProb}%</div>
+        // Only include forecasts for upcoming hours (skip current and past hours)
+        if (forecastTime > now) {
+            const time = period.startTime;
+            const temp = period.temperature;
+            const shortForecast = period.shortForecast;
+            const precipProb = period.probabilityOfPrecipitation.value || 0;
+            const icon = getWeatherIcon(shortForecast);
+
+            hoursHTML += `
+                <div class="hourly-item">
+                    <span class="hourly-time">${formatTime(time)}</span>
+                    <span class="hourly-icon">${icon}</span>
+                    <div style="text-align: right;">
+                        <div class="hourly-temp">${temp}°F</div>
+                        <div class="precip-info">${precipProb}%</div>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+            count++;
+        }
     }
 
     hourlyForecastDiv.innerHTML = hoursHTML;
@@ -255,7 +262,7 @@ function updateDailyForecast(data) {
 
 // Update last updated timestamp
 function updateLastUpdated() {
-    const lastUpdatedDiv = document.getElementById('lastUpdated');
+    const lastUpdatedText = document.getElementById('lastUpdatedText');
     const now = new Date();
     const timeString = now.toLocaleString('en-US', {
         hour: 'numeric',
@@ -264,7 +271,7 @@ function updateLastUpdated() {
         month: 'short',
         day: 'numeric'
     });
-    lastUpdatedDiv.textContent = `Last updated: ${timeString}`;
+    lastUpdatedText.textContent = `Last updated: ${timeString}`;
 }
 
 // Main update function
@@ -279,21 +286,43 @@ async function updateWeather() {
     }
 }
 
-// Auto-fullscreen on first click
-function initAutoFullscreen() {
-    document.addEventListener('click', function() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                console.log('Fullscreen request failed:', err);
-            });
+// Fullscreen toggle functionality
+function toggleFullscreen() {
+    const fullscreenToggle = document.getElementById('fullscreenToggle');
+
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            console.log('Fullscreen request failed:', err);
+        });
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
         }
-    }, { once: true });
+    }
+}
+
+// Initialize fullscreen button
+function initFullscreen() {
+    const fullscreenToggle = document.getElementById('fullscreenToggle');
+
+    // Add click event to fullscreen button
+    fullscreenToggle.addEventListener('click', toggleFullscreen);
+
+    // Listen for fullscreen changes to update icon
+    document.addEventListener('fullscreenchange', function() {
+        const fullscreenToggle = document.getElementById('fullscreenToggle');
+        if (document.fullscreenElement) {
+            fullscreenToggle.textContent = '🗗'; // Exit fullscreen icon
+        } else {
+            fullscreenToggle.textContent = '⛶'; // Enter fullscreen icon
+        }
+    });
 }
 
 // Initialize the app
 async function init() {
     initTheme();
-    initAutoFullscreen();
+    initFullscreen();
     await updateWeather();
 
     // Set up auto-refresh every 5 minutes
