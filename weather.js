@@ -14,43 +14,46 @@ const NWS_API = {
     daily: 'https://api.weather.gov/gridpoints/FFC/20,107/forecast'
 };
 
-// Cookie helper functions
-function setCookie(name, value, days = 365) {
-    const date = new Date();
-    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    const expires = "expires=" + date.toUTCString();
-    document.cookie = name + "=" + value + ";" + expires + ";path=/";
-}
-
-function getCookie(name) {
-    const nameEQ = name + "=";
-    const ca = document.cookie.split(';');
-    for (let i = 0; i < ca.length; i++) {
-        let c = ca[i];
-        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+// Clear all cookies
+function clearAllCookies() {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf("=");
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
     }
-    return null;
 }
 
-// Theme management
+// Clear all storage and caches
+function clearAllStorageAndCache() {
+    // Clear cookies
+    clearAllCookies();
+
+    // Clear localStorage
+    localStorage.clear();
+
+    // Clear sessionStorage
+    sessionStorage.clear();
+
+    // Clear cache storage if supported
+    if ('caches' in window) {
+        caches.keys().then(function(names) {
+            for (let name of names) {
+                caches.delete(name);
+            }
+        });
+    }
+}
+
+// Theme management (no persistence - always starts with light theme)
 function initTheme() {
-    const savedTheme = getCookie('theme');
     const themeToggle = document.getElementById('themeToggle');
 
-    // Default to light theme
-    if (!savedTheme || savedTheme === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-        document.body.setAttribute('data-theme', 'light');
-        themeToggle.textContent = '🌙';
-        if (!savedTheme) {
-            setCookie('theme', 'light');
-        }
-    } else if (savedTheme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        document.body.setAttribute('data-theme', 'dark');
-        themeToggle.textContent = '☀️';
-    }
+    // Always default to light theme on load
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.body.setAttribute('data-theme', 'light');
+    themeToggle.textContent = '🌙';
 
     themeToggle.addEventListener('click', toggleTheme);
 }
@@ -66,13 +69,11 @@ function toggleTheme() {
         html.setAttribute('data-theme', 'light');
         body.setAttribute('data-theme', 'light');
         themeToggle.textContent = '🌙';
-        setCookie('theme', 'light');
     } else {
         // Switch to dark
         html.setAttribute('data-theme', 'dark');
         body.setAttribute('data-theme', 'dark');
         themeToggle.textContent = '☀️';
-        setCookie('theme', 'dark');
     }
 }
 
@@ -321,6 +322,9 @@ function initFullscreen() {
 
 // Initialize the app
 async function init() {
+    // Clear all cookies, storage, and cache on every load
+    clearAllStorageAndCache();
+
     initTheme();
     initFullscreen();
     await updateWeather();

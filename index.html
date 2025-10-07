@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Weather Dashboard - Rome, GA</title>
     <link rel="stylesheet" href="UI_Design_Update/neumorphic-ui.css">
     <style>
@@ -418,6 +421,20 @@
         </div>
     </div>
 
+    <script>
+        // Clear cookies immediately on page load
+        (function() {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i];
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+            }
+            localStorage.clear();
+            sessionStorage.clear();
+        })();
+    </script>
     <script src="weather-icons.js"></script>
     <script src="weather.js"></script>
 </body>
