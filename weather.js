@@ -46,14 +46,14 @@ function clearAllStorageAndCache() {
     }
 }
 
-// Theme management (no persistence - always starts with light theme)
+// Theme management (no persistence - always starts with dark theme for TV display)
 function initTheme() {
     const themeToggle = document.getElementById('themeToggle');
 
-    // Always default to light theme on load
-    document.documentElement.setAttribute('data-theme', 'light');
-    document.body.setAttribute('data-theme', 'light');
-    themeToggle.textContent = '🌙';
+    // Always default to dark theme on load (warm dark palette for blue-tinted TV)
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.body.setAttribute('data-theme', 'dark');
+    themeToggle.textContent = '☀️';
 
     themeToggle.addEventListener('click', toggleTheme);
 }

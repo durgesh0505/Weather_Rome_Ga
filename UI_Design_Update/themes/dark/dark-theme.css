@@ -53,31 +53,32 @@ body[data-theme="light"] {
 }
 
 /* Manual dark mode override (data-theme attribute takes precedence) */
+/* Warm dark palette — tuned for aged TV with blue tint */
 [data-theme="dark"] {
-    /* Base Colors */
-    --neu-base: #2c2c2c;
-    --neu-dark: rgba(0, 0, 0, 0.4);
-    --neu-light: rgba(255, 255, 255, 0.05);
+    /* Base Colors — warm brown-black resists blue absorption */
+    --neu-base: #18120D;
+    --neu-dark: rgba(18, 13, 9, 0.85);
+    --neu-light: rgba(51, 39, 30, 0.5);
 
-    /* Accent Colors (same as light) */
-    --neu-accent: #4a9eff;
+    /* Accent Colors — warm amber replaces blue accent */
+    --neu-accent: #FFB000;
     --neu-success: #26d07c;
     --neu-warning: #f5a623;
     --neu-danger: #f56565;
 
-    /* Text Colors */
-    --neu-text: rgba(255, 255, 255, 0.95);
-    --neu-text-dim: rgba(255, 255, 255, 0.6);
+    /* Text Colors — warm cream instead of cold white */
+    --neu-text: #F6E7C8;
+    --neu-text-dim: #D8BD8A;
 
     /* Text Color Aliases */
-    --neu-text-primary: rgba(255, 255, 255, 0.95);
-    --neu-text-secondary: rgba(255, 255, 255, 0.6);
+    --neu-text-primary: #F6E7C8;
+    --neu-text-secondary: #D8BD8A;
 
-    /* Surface rim for dark theme */
-    --neu-surface-rim: rgba(255, 255, 255, 0.02);
+    /* Surface rim — warm tone */
+    --neu-surface-rim: rgba(51, 39, 30, 0.12);
 }
 
 body[data-theme="dark"] {
-    background: #2c2c2c;
-    color: rgba(255, 255, 255, 0.95);
+    background: #18120D;
+    color: #F6E7C8;
 }
