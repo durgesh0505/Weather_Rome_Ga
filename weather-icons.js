@@ -60,16 +60,3 @@ function getWeatherIcon(forecast) {
     // Default
     return '🌡️';
 }
-
-// Get precipitation type from description
-function getPrecipitationType(forecast) {
-    if (!forecast) return 'rain';
-
-    const desc = forecast.toLowerCase();
-
-    if (desc.includes('snow') || desc.includes('flurries') || desc.includes('sleet')) {
-        return 'snow';
-    }
-
-    return 'rain';
-}

@@ -1,10 +1,3 @@
-// Rome, GA coordinates
-const LOCATION = {
-    latitude: 34.2570,
-    longitude: -85.1647,
-    name: 'Rome, GA'
-};
-
 // Refresh interval: 5 minutes in milliseconds
 const REFRESH_INTERVAL = 5 * 60 * 1000;
 
@@ -14,37 +7,12 @@ const NWS_API = {
     daily: 'https://api.weather.gov/gridpoints/FFC/20,107/forecast'
 };
 
-// Clear all cookies
-function clearAllCookies() {
-    const cookies = document.cookie.split(";");
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i];
-        const eqPos = cookie.indexOf("=");
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+const FETCH_OPTIONS = {
+    cache: 'no-store',
+    headers: {
+        'Accept': 'application/geo+json'
     }
-}
-
-// Clear all storage and caches
-function clearAllStorageAndCache() {
-    // Clear cookies
-    clearAllCookies();
-
-    // Clear localStorage
-    localStorage.clear();
-
-    // Clear sessionStorage
-    sessionStorage.clear();
-
-    // Clear cache storage if supported
-    if ('caches' in window) {
-        caches.keys().then(function(names) {
-            for (let name of names) {
-                caches.delete(name);
-            }
-        });
-    }
-}
+};
 
 // Theme management (no persistence - always starts with dark theme for TV display)
 function initTheme() {
@@ -102,6 +70,52 @@ function formatDate(dateString) {
     return `${month}/${day}`;
 }
 
+function formatPercent(value) {
+    return Number.isFinite(value) ? `${Math.round(value)}%` : '--';
+}
+
+function getDateKey(dateInput) {
+    const date = new Date(dateInput);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+function buildDailySummaries(periods) {
+    const todayKey = getDateKey(new Date());
+    const summaries = new Map();
+
+    for (const period of periods) {
+        const dateKey = getDateKey(period.startTime);
+
+        if (dateKey === todayKey) {
+            continue;
+        }
+
+        if (!summaries.has(dateKey)) {
+            summaries.set(dateKey, {
+                date: period.startTime,
+                daytime: null,
+                nighttime: null,
+                fallback: period
+            });
+        }
+
+        const summary = summaries.get(dateKey);
+
+        if (period.isDaytime && !summary.daytime) {
+            summary.daytime = period;
+        }
+
+        if (!period.isDaytime && !summary.nighttime) {
+            summary.nighttime = period;
+        }
+    }
+
+    return Array.from(summaries.values()).slice(0, 5);
+}
+
 // Display error message
 function showError(message) {
     const errorContainer = document.getElementById('errorContainer');
@@ -125,8 +139,8 @@ async function fetchWeatherData() {
 
         // Fetch both hourly and daily forecasts
         const [hourlyResponse, dailyResponse] = await Promise.all([
-            fetch(NWS_API.hourly),
-            fetch(NWS_API.daily)
+            fetch(NWS_API.hourly, FETCH_OPTIONS),
+            fetch(NWS_API.daily, FETCH_OPTIONS)
         ]);
 
         if (!hourlyResponse.ok || !dailyResponse.ok) {
@@ -156,7 +170,7 @@ function updateCurrentWeather(data) {
     const current = data.hourly[0];
 
     const temperature = current.temperature;
-    const humidity = current.relativeHumidity.value;
+    const humidity = current.relativeHumidity?.value;
     const precipProb = current.probabilityOfPrecipitation.value || 0;
     const shortForecast = current.shortForecast;
 
@@ -172,11 +186,11 @@ function updateCurrentWeather(data) {
         <div class="weather-details">
             <div class="detail-item">
                 <span class="detail-label">Humidity</span>
-                <span class="detail-value">${humidity}%</span>
+                <span class="detail-value">${formatPercent(humidity)}</span>
             </div>
             <div class="detail-item">
                 <span class="detail-label">Precip</span>
-                <span class="detail-value">${precipProb}%</span>
+                <span class="detail-value">${formatPercent(precipProb)}</span>
             </div>
         </div>
     `;
@@ -210,7 +224,7 @@ function updateHourlyForecast(data) {
                     <span class="hourly-icon">${icon}</span>
                     <div style="text-align: right;">
                         <div class="hourly-temp">${temp}°F</div>
-                        <div class="precip-info">${precipProb}%</div>
+                        <div class="precip-info">${formatPercent(precipProb)}</div>
                     </div>
                 </div>
             `;
@@ -224,23 +238,18 @@ function updateHourlyForecast(data) {
 // Update daily forecast (next 5 days)
 function updateDailyForecast(data) {
     const dailyForecastDiv = document.getElementById('dailyForecast');
-    const daily = data.daily;
+    const dailySummaries = buildDailySummaries(data.daily);
 
     let daysHTML = '';
 
-    // NWS returns periods alternating day/night, pair them to get high/low
-    // Skip index 0-1 (today), start from tomorrow (index 2-3)
-    for (let i = 2; i < 12; i += 2) {
-        const dayPeriod = daily[i];
-        const nightPeriod = daily[i + 1];
-
-        if (!dayPeriod || !nightPeriod) break;
-
-        const date = dayPeriod.startTime;
-        const tempHigh = dayPeriod.temperature;
+    for (const summary of dailySummaries) {
+        const displayPeriod = summary.daytime || summary.fallback;
+        const nightPeriod = summary.nighttime || summary.fallback;
+        const date = displayPeriod.startTime;
+        const tempHigh = summary.daytime ? summary.daytime.temperature : displayPeriod.temperature;
         const tempLow = nightPeriod.temperature;
-        const shortForecast = dayPeriod.shortForecast;
-        const precipProb = dayPeriod.probabilityOfPrecipitation.value || 0;
+        const shortForecast = displayPeriod.shortForecast;
+        const precipProb = displayPeriod.probabilityOfPrecipitation.value || 0;
         const icon = getWeatherIcon(shortForecast);
 
         daysHTML += `
@@ -255,7 +264,7 @@ function updateDailyForecast(data) {
                         <span class="temp-high">${tempHigh}°</span>
                         <span class="temp-low">${tempLow}°</span>
                     </div>
-                    <div class="precip-info">${precipProb}%</div>
+                    <div class="precip-info">${formatPercent(precipProb)}</div>
                 </div>
             </div>
         `;
@@ -346,9 +355,6 @@ function initFullscreen() {
 
 // Initialize the app
 async function init() {
-    // Clear all cookies, storage, and cache on every load
-    clearAllStorageAndCache();
-
     initTheme();
     initFullscreen();
     await updateWeather();
