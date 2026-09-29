@@ -22,6 +22,7 @@
 ## Theme / color
 | Rule | Why |
 |------|-----|
+| `index.html` links 5 CSS files directly (variables, base, dark-theme, feedback, layout); if the page starts using a class from another UI_Design_Update component, add that file's `<link>` too, because `neumorphic-ui.css` is no longer loaded | 2026-09-29 option B: dropped the @import entry and 8 unused files, CSS requests 14 → 5 |
 | Dark theme is default on load; warm palette lives in `[data-theme="dark"]` in `UI_Design_Update/themes/dark/dark-theme.css` | Aged TV has permanent blue tint; blue accent #4a9eff was unreadable |
 | No blues, cool grays, pure white, or warm teal in dark palette | Teal #4DB6AC flagged unreliable on blue-shifted panel (Talk.md 12:39 review) |
 | Card edges use `border: 1px solid var(--neu-card-border)` (`#5A4430`, 2.04:1); don't rely on neumorphic shadows alone in dark theme | 2026-09-29: shadows measured 1.03–1.11:1 vs `#18120D`, so cards looked flat |

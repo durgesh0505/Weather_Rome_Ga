@@ -33,7 +33,7 @@ Weather_App/
 | `weather-icons.js` | Keyword match on `shortForecast` → emoji | Icons without image assets |
 | `UI_Design_Update/themes/dark/dark-theme.css` | `[data-theme="dark"]` warm palette (#18120D base, #FFB000 accent, #F6E7C8 text) | Blue-tinted aged TV |
 | `UI_Design_Update/core/variables.css` | Base tokens (light defaults) | Design system tokens |
-| `UI_Design_Update/components/*` | Buttons, cards, forms, etc. | Mostly unused; only `.spinner` and `.alert` used |
+| `UI_Design_Update/components/*` | Buttons, cards, forms, etc. | Page links only `feedback.css` (spinner, alert) and `layout.css` (section-title) directly |
 | `CLAUDE.md` | Imports RULEBOOK.md | Auto-load rules each session |
 | `RULEBOOK.md` | Rule/Why tables | Prevent repeat incidents |
 | `Talk.md` | Agent handoff log | Claude Code ↔ Codex continuity |
@@ -52,3 +52,4 @@ Weather_App/
 | `projectdocs/opendesign-ui-analysis-findings.md` | OD 5-dimension scores + Claude-verified/rejected findings | UI improvement backlog |
 | `projectdocs/ui-fixes-p0-p1-task.md` | 5 OD-confirmed fixes: night icons, KRMG obs, amber reduction, card borders, alert contrast + verification results | Change record |
 | `projectdocs/dynamic-text-fill-task.md` | Container-query text sizing + fullscreen icon color, final values + stress-test results | Change record |
+| `projectdocs/css-direct-links-task.md` | Option B: 5 direct CSS links replace the @import entry; style-diff proof | Change record |

@@ -41,3 +41,6 @@ To make dashboard text fill its cards, size it with container query units (`cqh`
 
 2026-09-29 14:55 EDT
 A successful `git push` does not prove a GitHub Pages deploy. After the custom domain was changed in the UI, pushes to `main` stopped triggering `pages build and deployment`, and the live site stayed frozen on the previous build. Check the Actions runs API for the pushed SHA, and check the origin with `curl -H "Host: <domain>" http://185.199.108.153/<file>` to bypass Cloudflare. Cloudflare in front also stretched browser cache to 4 h, so the live check needs a cache-busting query string or a purge.
+
+2026-09-29 15:02 EDT
+CSS `@import`s inside one stylesheet are fetched in parallel after the parent file arrives, not one after another. The real cost is one extra round-trip plus any unused files. I misstated this as sequential loading before checking and had to correct it. To prove a stylesheet swap changes nothing, diff `getComputedStyle` for every element in both themes between the old and new page. Inherited custom properties from dropped files will appear on every element, so filter them before counting real diffs.
