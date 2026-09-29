@@ -1,12 +1,13 @@
 # 📚 Table of Contents — Weather Dashboard (Rome, GA)
 
-Live site: `weather.chiggi.net` (GitHub Pages, repo `durgesh0505/Weather_Rome_Ga`; domain set in Pages settings, no CNAME file; Cloudflare-proxied DNS)
+Live site: `weather.chiggi.net` (GitHub Pages, repo `durgesh0505/Weather_Rome_Ga`; `CNAME` managed by Pages settings; Cloudflare-proxied DNS)
 
 ## 🗂️ File Structure
 ```
 Weather_App/
 ├── index.html                 # Page shell + all layout CSS (inline <style>)
 ├── weather.js                 # NWS fetch, render, theme, fullscreen, favicon, 5-min refresh
+├── CNAME                      # weather.chiggi.net (written by GitHub Pages settings)
 ├── weather-icons.js           # getWeatherIcon(): NWS shortForecast text → emoji
 ├── CLAUDE.md                  # Project instructions; @-imports RULEBOOK.md
 ├── RULEBOOK.md                # Project law: one-line rules with incident-based why
@@ -30,6 +31,7 @@ Weather_App/
 |------|-------------|--------|
 | `index.html` | Header, 3-column grid (hourly / current / daily), footer; inline CSS with `dvh` + `clamp()` sizing | Single-page TV dashboard |
 | `weather.js` | Fetches NWS hourly + daily + KRMG latest observation (current temp/humidity, forecast fallback), renders cards, dark default theme, fullscreen toggle, emoji favicon, refresh every 5 min | All runtime logic |
+| `CNAME` | `weather.chiggi.net` | Custom domain; GitHub rewrites it when Pages settings are saved |
 | `weather-icons.js` | Keyword match on `shortForecast` → emoji | Icons without image assets |
 | `UI_Design_Update/themes/dark/dark-theme.css` | `[data-theme="dark"]` warm palette (#18120D base, #FFB000 accent, #F6E7C8 text) | Blue-tinted aged TV |
 | `UI_Design_Update/core/variables.css` | Base tokens (light defaults) | Design system tokens |

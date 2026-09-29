@@ -41,7 +41,7 @@
 ## Deploy / GitHub Pages
 | Rule | Why |
 |------|-----|
-| Don't add a `CNAME` file; custom domain `weather.chiggi.net` lives in GitHub Pages settings, and DNS is a Cloudflare-proxied record. Verify with `curl -sI http://durgesh0505.github.io/Weather_Rome_Ga/`, which should 301 to weather.chiggi.net | 2026-09-29: user deleted CNAME on GitHub (commit 8dd8fab) while a local CNAME commit was pending, the push was rejected, and the local commit was dropped in the rebase |
+| `CNAME` must contain exactly `weather.chiggi.net`; GitHub rewrites it when Pages settings are saved, so never edit or delete it from a local commit. Verify with `curl -sI http://durgesh0505.github.io/Weather_Rome_Ga/`, which should 301 to weather.chiggi.net | 2026-09-29: CNAME was deleted in the UI (8dd8fab), then Pages stopped building until the user re-saved Settings → Pages, which recreated CNAME (9aafef8) |
 | Run `git fetch` and `git log HEAD..origin/main` before pushing; the user edits the repo on GitHub directly | 2026-09-29: push rejected because of 5 remote-only CNAME commits made in the GitHub UI |
 | After every push, confirm a new `pages build and deployment` run for the pushed SHA: `curl -s "https://api.github.com/repos/durgesh0505/Weather_Rome_Ga/actions/runs?per_page=2"`; if none within 3 min, check Settings → Pages → Source = Deploy from branch `main` / root | 2026-09-29: pushes ead32a7 and an empty retrigger produced no build; the site stayed on the 18:08 deploy |
 | After a deploy is live, purge Cloudflare cache for weather.chiggi.net; Cloudflare serves `weather.js` with `max-age=14400` (4 h) even though GitHub sends 600 | 2026-09-29: `cf-cache-status: HIT`, browser TTL 4 h, so the TV can run old JS for up to 4 h after a reload |
