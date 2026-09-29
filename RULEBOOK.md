@@ -40,7 +40,8 @@
 ## Deploy / GitHub Pages
 | Rule | Why |
 |------|-----|
-| Before changing `CNAME`, confirm `nslookup -type=CNAME <domain> 8.8.8.8` resolves to `durgesh0505.github.io`; Cloudflare record must be DNS-only (grey cloud) so GitHub can issue HTTPS | 2026-09-29: switch to `weather.chiggi.net` found both `.net` and old `.us` NXDOMAIN; an active custom domain makes github.io redirect to a dead name |
+| Don't add a `CNAME` file; custom domain `weather.chiggi.net` lives in GitHub Pages settings, and DNS is a Cloudflare-proxied record. Verify with `curl -sI http://durgesh0505.github.io/Weather_Rome_Ga/`, which should 301 to weather.chiggi.net | 2026-09-29: user deleted CNAME on GitHub (commit 8dd8fab) while a local CNAME commit was pending, the push was rejected, and the local commit was dropped in the rebase |
+| Run `git fetch` and `git log HEAD..origin/main` before pushing; the user edits the repo on GitHub directly | 2026-09-29: push rejected because of 5 remote-only CNAME commits made in the GitHub UI |
 
 ## Session hygiene
 | Rule | Why |
