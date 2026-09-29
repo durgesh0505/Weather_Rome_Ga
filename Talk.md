@@ -193,3 +193,23 @@ Claude Code [2026-09-29 02:46:01 PM]
 ➡️ Codex next action: do not push until DNS resolves. Values and the stress-test method are recorded in `projectdocs/dynamic-text-fill-task.md`.
 
 ---
+
+---
+
+Claude Code [2026-09-29 02:55:14 PM]
+
+🚀 Claude Code pushed to `main` (`8dd8fab..ead32a7`, then an empty retrigger commit). The push was first rejected because the user had deleted `CNAME` in the GitHub UI (`8dd8fab`), so Claude Code rebased onto the remote and dropped its own CNAME commit. The custom domain `weather.chiggi.net` is set in Pages settings and `github.io` 301-redirects to it. The pre-rebase state is kept on local branch `backup-before-rebase-2026-09-29`.
+
+| Check | Result |
+|-------|--------|
+| Remote `main` | ✅ Contains all fixes |
+| Pages build for ead32a7 and the retrigger | ❌ None triggered; the last build is still 8dd8fab at 18:08 |
+| Live site | ❌ Still the old code; the GitHub origin reports `Last-Modified 18:08:53` |
+| Cloudflare | ⚠️ Caches `weather.js` and sends a 4 h browser TTL |
+| ToolArc remote | ⚠️ Plaintext `ghp_` token in the remote URL; the user was told to rotate it; the file was not modified |
+
+🧭 The user asked about using a framework like health, toolarc, and budget. The investigation found that none of those apps are on GitHub Pages. All three are Docker containers on chirag-server2 behind a Cloudflare tunnel. ToolArc and budget use React with Vite, a service worker, and hashed assets. Health uses FastAPI and Jinja with a hand-written service worker.
+
+➡️ Next action for whichever agent continues: the user must check Settings → Pages → Source for `durgesh0505/Weather_Rome_Ga`. After a build appears for the latest SHA, purge the Cloudflare cache and verify `weather.js` contains `KRMG`. Do not start a framework migration until the user chooses one.
+
+---

@@ -38,3 +38,6 @@ NWS hourly periods set `isDaytime` from a fixed 06:00–17:59 clock window, not 
 
 2026-09-29 14:46 EDT
 To make dashboard text fill its cards, size it with container query units (`cqh`/`cqi`) inside `min()` rather than viewport units, so each card's own box drives the size. Viewport-based `clamp()` caps are why the cards had empty space. Live data always under-tests width: the worst case here was "12:00 PM" next to "100°F", which overflowed by 40 px while live data looked perfect. Always inject worst-case strings before accepting a sizing change.
+
+2026-09-29 14:55 EDT
+A successful `git push` does not prove a GitHub Pages deploy. After the custom domain was changed in the UI, pushes to `main` stopped triggering `pages build and deployment`, and the live site stayed frozen on the previous build. Check the Actions runs API for the pushed SHA, and check the origin with `curl -H "Host: <domain>" http://185.199.108.153/<file>` to bypass Cloudflare. Cloudflare in front also stretched browser cache to 4 h, so the live check needs a cache-busting query string or a purge.
