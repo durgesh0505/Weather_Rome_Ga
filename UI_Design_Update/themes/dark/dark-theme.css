@@ -21,6 +21,9 @@
         /* Text Colors */
         --neu-text: rgba(255, 255, 255, 0.95);
         --neu-text-dim: rgba(255, 255, 255, 0.6);
+
+        /* Card edge border */
+        --neu-card-border: #4a4a4a;
     }
 
     body:not([data-theme]) {
@@ -45,6 +48,9 @@
     /* Text Colors - Light Theme */
     --neu-text: rgba(0, 0, 0, 0.87);
     --neu-text-dim: rgba(0, 0, 0, 0.6);
+
+    /* Card edge border */
+    --neu-card-border: #b8c2d0;
 }
 
 body[data-theme="light"] {
@@ -76,6 +82,9 @@ body[data-theme="light"] {
 
     /* Surface rim — warm tone */
     --neu-surface-rim: rgba(51, 39, 30, 0.12);
+
+    /* Card edge border — warm brown, 2.04:1 on #18120D (soft shadows are only 1.03–1.11:1) */
+    --neu-card-border: #5A4430;
 }
 
 body[data-theme="dark"] {

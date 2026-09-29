@@ -79,6 +79,9 @@
     /* Surface rim for button unity */
     --neu-surface-rim: rgba(255, 255, 255, 0.05);
 
+    /* Card edge border (visible outline where soft shadows wash out) */
+    --neu-card-border: #b8c2d0;
+
     /* Primary color variant */
     --color-primary-variant: #3b82f6;
 }

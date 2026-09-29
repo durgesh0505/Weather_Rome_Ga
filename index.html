@@ -65,6 +65,7 @@
             align-items: center;
             padding: clamp(0.55rem, 1.1vmin, 0.85rem) clamp(0.9rem, 2vw, 1.5rem);
             background: var(--neu-base);
+            border: 1px solid var(--neu-card-border);
             border-radius: var(--neu-radius-lg);
             box-shadow:
                 -10px -10px 20px var(--neu-light),
@@ -74,7 +75,7 @@
 
         .location {
             font-size: clamp(1.7rem, 3.6vw, 2.75rem);
-            color: var(--neu-accent);
+            color: var(--neu-text);
             margin: 0;
             font-weight: 700;
             letter-spacing: 0.5px;
@@ -137,6 +138,11 @@
             overflow-wrap: anywhere;
         }
 
+        /* Dark text on red: 6.13:1 (white on #f56565 was 3.03:1) */
+        #errorContainer .alert.error {
+            color: #18120D;
+        }
+
         .weather-grid {
             flex: 1 1 auto;
             min-height: 0;
@@ -185,6 +191,7 @@
             text-align: center;
             padding: clamp(0.6rem, 1.4vmin, 1.1rem);
             background: var(--neu-base);
+            border: 1px solid var(--neu-card-border);
             border-radius: var(--neu-radius-xl);
             box-shadow:
                 -12px -12px 24px var(--neu-light),
@@ -252,6 +259,7 @@
             gap: clamp(0.15rem, 0.35vmin, 0.3rem);
             background: var(--neu-base);
             padding: clamp(0.5rem, 1vmin, 0.85rem) clamp(0.7rem, 1.6vw, 1.1rem);
+            border: 1px solid var(--neu-card-border);
             border-radius: var(--neu-radius-lg);
             box-shadow:
                 inset -5px -5px 10px var(--neu-light),
@@ -271,12 +279,13 @@
         .detail-value {
             font-size: clamp(1.65rem, min(3.4vw, 4.6vh), 2.6rem);
             font-weight: 800;
-            color: var(--neu-accent);
+            color: var(--neu-text);
             letter-spacing: -0.5px;
         }
 
         .hourly-item, .daily-item {
             background: var(--neu-base);
+            border: 1px solid var(--neu-card-border);
             border-radius: var(--neu-radius-lg);
             padding: clamp(0.28rem, 0.55vmin, 0.5rem) clamp(0.45rem, 0.9vw, 0.75rem);
             box-shadow:
@@ -334,7 +343,7 @@
         }
 
         .temp-low {
-            color: var(--neu-accent);
+            color: var(--neu-text-dim);
         }
 
         .precip-info {

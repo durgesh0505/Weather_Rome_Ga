@@ -1,22 +1,23 @@
-// Weather Icons Mapping for NWS shortForecast descriptions
-function getWeatherIcon(forecast) {
+// Weather Icons Mapping for NWS shortForecast / observation textDescription
+// isDaytime comes from the NWS period (defaults to day when unknown)
+function getWeatherIcon(forecast, isDaytime = true) {
     if (!forecast) return '🌡️';
 
     const desc = forecast.toLowerCase();
 
+    // Mostly Sunny/Partly Sunny/Mostly Clear/Partly Cloudy (checked before plain Sunny/Clear so they are reachable)
+    if (desc.includes('partly cloudy') || desc.includes('mostly sunny') || desc.includes('partly sunny') || desc.includes('mostly clear')) {
+        return isDaytime ? '🌤️' : '🌙';
+    }
+
     // Clear/Sunny
     if (desc.includes('sunny') || desc.includes('clear')) {
-        return '☀️';
+        return isDaytime ? '☀️' : '🌙';
     }
 
-    // Partly Cloudy/Mostly Sunny
-    if (desc.includes('partly cloudy') || desc.includes('mostly sunny') || desc.includes('partly sunny')) {
-        return '🌤️';
-    }
-
-    // Mostly Cloudy/Partly Sunny
+    // Mostly Cloudy
     if (desc.includes('mostly cloudy')) {
-        return '⛅';
+        return isDaytime ? '⛅' : '☁️';
     }
 
     // Cloudy/Overcast
@@ -41,7 +42,7 @@ function getWeatherIcon(forecast) {
 
     // Rain Showers
     if (desc.includes('showers') || desc.includes('rain')) {
-        if (desc.includes('light')) {
+        if (desc.includes('light') && isDaytime) {
             return '🌦️';
         }
         return '🌧️';
@@ -49,7 +50,7 @@ function getWeatherIcon(forecast) {
 
     // Drizzle
     if (desc.includes('drizzle')) {
-        return '🌦️';
+        return isDaytime ? '🌦️' : '🌧️';
     }
 
     // Windy

@@ -66,3 +66,110 @@ I completed the center-card fit pass. I changed index.html only. The fix was tar
 
 Codex [2026-03-29 13:05 EDT]
 User reported that the dashboard text is still too small and explicitly wants the text as large as possible while the full page still fits on screen. I created projectdocs/text-size-maximization-task.md before making any new changes. Next I am measuring the current typography at runtime and will tune the font-size clamps and supporting spacing so the page uses the available fullscreen area more aggressively without reintroducing overflow.
+
+---
+
+Claude Code [2026-09-29 02:10:23 PM]
+
+🔍 User asked Claude Code to understand the project. This was a read-only analysis and no application code was changed.
+
+📁 Documentation files created or changed in this session:
+
+| File | Action | Reason |
+|------|--------|--------|
+| `Table_of_Contents.md` | Created | Global rule requires a file map with description and reason per file |
+| `RULEBOOK.md` | Created | Global rule requires a rule file mined from real incidents in Talk.md, learn.md, and git history |
+| `CLAUDE.md` | Created | Imports `@RULEBOOK.md` so the rules auto-load every session |
+| `projectdocs/project-understanding-task.md` | Created | Task tracker for this analysis with the open findings list |
+| `Talk.md` | Appended | This entry |
+
+⚠️ Open findings that were not fixed because the user has not approved changes:
+
+| # | Finding | Location |
+|---|---------|----------|
+| 1 | The large "current" temperature is NWS hourly forecast period 0, not a measured observation from a station such as KRMG | `weather.js` `updateCurrentWeather` |
+| 2 | A failed NWS request is not retried until the next 5-minute interval | `weather.js` `fetchWeatherData` |
+| 3 | `probabilityOfPrecipitation.value || 0` renders `0%` when NWS returns null instead of `--` | `weather.js` hourly, daily, and current renderers |
+| 4 | The page never reloads itself, so a deployed JS or CSS change reaches the TV only after a manual reload | `weather.js` `init` |
+| 5 | The full neumorphic library loads through 11 chained `@import` requests while the page uses only tokens, the dark theme, `.spinner`, and `.alert` | `UI_Design_Update/neumorphic-ui.css` |
+| 6 | `learn.md` is untracked in git | repo root |
+
+✅ Current baseline remains commit `2db3763` on branch `main`, which matches the Codex 13:46 EDT center-card fit entry.
+
+➡️ Codex next action: read `RULEBOOK.md` before any change, and do not act on the findings table above until the user picks which item to address first.
+
+---
+
+---
+
+Claude Code [2026-09-29 02:16:31 PM]
+
+🚧 User asked Claude Code to analyze the UI with the opendesign MCP server. That was blocked because opendesign is set up in `~/.claude.json` only for the project scope `C:/Users/durge` (SSE endpoint, URL kept in ~/.claude.json only), so its tools do not load in a session started in `Weather_App`.
+
+| Item | State |
+|------|-------|
+| opendesign tools in this session | ❌ Not loaded |
+| Config changed | ❌ No, waiting for user approval |
+| App code changed | ❌ No |
+
+➡️ Codex next action: if opendesign is needed from this folder, the user must add it at user scope or start the session from `C:/Users/durge`. Do not copy the bearer token into any project file.
+
+---
+
+---
+
+Claude Code [2026-09-29 02:21:39 PM]
+
+🔧 With user approval, Claude Code added the opendesign MCP server at user scope. It backed up the config to `~/.claude.json.bak-2026-09-29` and ran `claude mcp add --transport sse --scope user opendesign <endpoint>` with the Authorization header read from the existing local-scope entry, and the token was never printed.
+
+| Check | Result |
+|-------|--------|
+| `claude mcp list` from Weather_App | ✅ `opendesign ... (SSE) - ✔ Connected` |
+| opendesign tools in the current session | ❌ Not loaded, restart required |
+| RULEBOOK.md | Added 2 Session hygiene rules about MCP scope and restart |
+| learn.md | Added the MCP scope lesson |
+
+➡️ Next action for whichever agent continues: after the Claude Code restart, list the opendesign tools, then run the UI analysis on `index.html` and `UI_Design_Update/themes/dark/dark-theme.css` against the TV constraints in RULEBOOK.md. Write the result to `projectdocs/opendesign-ui-analysis-findings.md`. Make no code changes without user approval.
+
+---
+
+---
+
+Claude Code [2026-09-29 02:32:10 PM]
+
+🎨 Claude Code ran an OpenDesign Critique on the dashboard. It created OD project `rome-ga-weather-dashboard`, uploaded one bundled `index.html` containing the repo HTML, both JS files, and the 5 CSS files the page uses, and ran the Critique plugin. The run succeeded in about 4 minutes and wrote `critique.html` inside OpenDesign. The mean score is 6.0/10: Philosophy 7, Hierarchy 5, Detail 7, Function 6, Innovation 5.
+
+| Result | Detail |
+|--------|--------|
+| ✅ Confirmed P0 | Night "Clear" shows ☀️ (36 of 156 live hours), and the big temperature is forecast period 0 rather than a KRMG observation |
+| ✅ Confirmed P1 | Amber is overused (1.50:1 against text), neumorphic shadows are invisible (1.03 to 1.11:1), and the error alert is 3.03:1 |
+| ❌ Rejected | The `prefers-reduced-motion` fix has no effect on the TV PC, and the claim about daily temperature size is false because both columns share one rule |
+| ⚠️ Needs user | Burn-in risk depends on the unknown TV panel type, and removing the theme toggle conflicts with the no-removal decision |
+
+📁 Files changed: `projectdocs/opendesign-ui-analysis-findings.md` created, `projectdocs/opendesign-ui-analysis-task.md` closed, one RULEBOOK.md rule rewritten and one added, one learn.md entry added, and two Table_of_Contents.md rows added. No app code was changed.
+
+➡️ Codex next action: use `projectdocs/opendesign-ui-analysis-findings.md` as the backlog. Do not act on any item until the user picks one. The line numbers in the OD report refer to the bundle, not the repo files.
+
+---
+
+---
+
+Claude Code [2026-09-29 02:38:42 PM]
+
+🛠️ User approved all 5 confirmed OpenDesign findings and said the TV is LCD/LED, so burn-in protection was dropped. All 5 fixes are implemented and verified. Nothing has been committed yet.
+
+| # | Fix | Files and functions |
+|---|-----|--------------------|
+| 1 | Night icons: `getWeatherIcon(forecast, isDaytime = true)` returns 🌙 or ☁️ at night, and "mostly/partly sunny" and "mostly clear" are checked before "sunny"/"clear" | `weather-icons.js`, plus the 3 callers in `weather.js` |
+| 2 | Current conditions come from the KRMG observation. New `toFahrenheit()` and `fetchObservation()` (never throws, 2 h stale limit), the observation is added to the `fetchWeatherData` Promise.all, `updateCurrentWeather` uses the observation with forecast fallback, and `updateLastUpdated(data)` shows the source | `weather.js` |
+| 3 | Amber reduction: `.location` and `.detail-value` changed to `--neu-text`, `.temp-low` changed to `--neu-text-dim` | `index.html` |
+| 4 | New `--neu-card-border` token plus a 1px border on `.header`, `.current-card`, `.detail-item`, `.hourly-item`, and `.daily-item` | `dark-theme.css`, `variables.css`, `index.html` |
+| 5 | `#errorContainer .alert.error { color: #18120D; }` raises contrast from 3.03:1 to 6.13:1 | `index.html` |
+
+✅ Verification: `node --check` passes. Zero night periods get sun-type icons on live NWS data. Headless Chrome at 1920x1080, 1366x768, and 1280x720 shows 0 overflow, 5+5 rows, and 0 clipped cards. The live KRMG path and the forced-failure fallback path both render cleanly.
+
+⚠️ New limitation: NWS `isDaytime` is a fixed 06:00 to 17:59 window, so icons near dusk and dawn can be wrong by up to about 1.5 hours. The exact fix is a JS sunrise/sunset calculation for 34.257,-85.165, and it is not implemented yet.
+
+➡️ Codex next action: do not commit until the user reviews the change. If the user approves the sunrise/sunset work, replace `isDaytime` inputs with a computed value and re-run the same 3-viewport headless Chrome check that is recorded in `projectdocs/ui-fixes-p0-p1-task.md`.
+
+---

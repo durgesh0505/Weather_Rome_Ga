@@ -4,8 +4,13 @@ const REFRESH_INTERVAL = 5 * 60 * 1000;
 // NWS API endpoints
 const NWS_API = {
     hourly: 'https://api.weather.gov/gridpoints/FFC/20,107/forecast/hourly',
-    daily: 'https://api.weather.gov/gridpoints/FFC/20,107/forecast'
+    daily: 'https://api.weather.gov/gridpoints/FFC/20,107/forecast',
+    // KRMG = Rome, R. B. Russell Airport (nearest station to grid FFC/20,107)
+    observation: 'https://api.weather.gov/stations/KRMG/observations/latest'
 };
+
+// Observations older than this fall back to the hourly forecast
+const OBSERVATION_MAX_AGE = 2 * 60 * 60 * 1000;
 
 const FETCH_OPTIONS = {
     cache: 'no-store',
@@ -132,15 +137,58 @@ function clearError() {
     errorContainer.innerHTML = '';
 }
 
+// Convert an NWS temperature quantity to °F (observations report °C)
+function toFahrenheit(quantity) {
+    if (!quantity || !Number.isFinite(quantity.value)) {
+        return null;
+    }
+    if (quantity.unitCode === 'wmoUnit:degC') {
+        return Math.round(quantity.value * 9 / 5 + 32);
+    }
+    return Math.round(quantity.value);
+}
+
+// Fetch latest KRMG observation; returns null (never throws) so the forecast still renders
+async function fetchObservation() {
+    try {
+        const response = await fetch(NWS_API.observation, FETCH_OPTIONS);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const props = (await response.json()).properties;
+        const temperature = toFahrenheit(props.temperature);
+        const observedAt = new Date(props.timestamp);
+
+        if (temperature === null || Number.isNaN(observedAt.getTime())) {
+            throw new Error('observation has no temperature or timestamp');
+        }
+        if (Date.now() - observedAt.getTime() > OBSERVATION_MAX_AGE) {
+            throw new Error(`observation is stale (${props.timestamp})`);
+        }
+
+        return {
+            temperature,
+            humidity: props.relativeHumidity?.value,
+            description: props.textDescription,
+            observedAt
+        };
+    } catch (error) {
+        console.warn('KRMG observation unavailable, using hourly forecast:', error.message);
+        return null;
+    }
+}
+
 // Fetch weather data from NWS API
 async function fetchWeatherData() {
     try {
         clearError();
 
-        // Fetch both hourly and daily forecasts
-        const [hourlyResponse, dailyResponse] = await Promise.all([
+        // Fetch hourly and daily forecasts plus the latest station observation
+        const [hourlyResponse, dailyResponse, observation] = await Promise.all([
             fetch(NWS_API.hourly, FETCH_OPTIONS),
-            fetch(NWS_API.daily, FETCH_OPTIONS)
+            fetch(NWS_API.daily, FETCH_OPTIONS),
+            fetchObservation()
         ]);
 
         if (!hourlyResponse.ok || !dailyResponse.ok) {
@@ -152,7 +200,8 @@ async function fetchWeatherData() {
 
         return {
             hourly: hourlyData.properties.periods,
-            daily: dailyData.properties.periods
+            daily: dailyData.properties.periods,
+            observation
         };
 
     } catch (error) {
@@ -166,15 +215,16 @@ async function fetchWeatherData() {
 function updateCurrentWeather(data) {
     const currentWeatherDiv = document.getElementById('currentWeather');
 
-    // Get current hour data (first period)
+    // Current hour forecast (first period) supplies precip and day/night, and is the fallback
     const current = data.hourly[0];
+    const observation = data.observation;
 
-    const temperature = current.temperature;
-    const humidity = current.relativeHumidity?.value;
+    const temperature = observation ? observation.temperature : current.temperature;
+    const humidity = Number.isFinite(observation?.humidity) ? observation.humidity : current.relativeHumidity?.value;
     const precipProb = current.probabilityOfPrecipitation.value || 0;
-    const shortForecast = current.shortForecast;
+    const shortForecast = observation?.description || current.shortForecast;
 
-    const icon = getWeatherIcon(shortForecast);
+    const icon = getWeatherIcon(shortForecast, current.isDaytime);
 
     // Update favicon with current weather icon
     updateFavicon(icon);
@@ -216,7 +266,7 @@ function updateHourlyForecast(data) {
             const temp = period.temperature;
             const shortForecast = period.shortForecast;
             const precipProb = period.probabilityOfPrecipitation.value || 0;
-            const icon = getWeatherIcon(shortForecast);
+            const icon = getWeatherIcon(shortForecast, period.isDaytime);
 
             hoursHTML += `
                 <div class="hourly-item">
@@ -250,7 +300,7 @@ function updateDailyForecast(data) {
         const tempLow = nightPeriod.temperature;
         const shortForecast = displayPeriod.shortForecast;
         const precipProb = displayPeriod.probabilityOfPrecipitation.value || 0;
-        const icon = getWeatherIcon(shortForecast);
+        const icon = getWeatherIcon(shortForecast, displayPeriod.isDaytime);
 
         daysHTML += `
             <div class="daily-item">
@@ -273,8 +323,8 @@ function updateDailyForecast(data) {
     dailyForecastDiv.innerHTML = daysHTML;
 }
 
-// Update last updated timestamp
-function updateLastUpdated() {
+// Update last updated timestamp and the source of the current conditions
+function updateLastUpdated(data) {
     const lastUpdatedText = document.getElementById('lastUpdatedText');
     const now = new Date();
     const timeString = now.toLocaleString('en-US', {
@@ -284,7 +334,12 @@ function updateLastUpdated() {
         month: 'short',
         day: 'numeric'
     });
-    lastUpdatedText.textContent = `Last updated: ${timeString}`;
+
+    const source = data.observation
+        ? `Observed ${data.observation.observedAt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })} at KRMG`
+        : 'Current from NWS forecast (station data unavailable)';
+
+    lastUpdatedText.textContent = `Last updated: ${timeString} · ${source}`;
 }
 
 // Update favicon with weather icon
@@ -316,7 +371,7 @@ async function updateWeather() {
         updateCurrentWeather(data);
         updateHourlyForecast(data);
         updateDailyForecast(data);
-        updateLastUpdated();
+        updateLastUpdated(data);
     }
 }
 
