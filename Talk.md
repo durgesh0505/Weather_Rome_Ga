@@ -231,3 +231,22 @@ Claude Code [2026-09-29 03:02:20 PM]
 ➡️ Next action for whichever agent continues: once the user fixes Settings → Pages → Source and approves, push, confirm a build for the new SHA, purge the Cloudflare cache, and verify that `weather.js` contains `KRMG`.
 
 ---
+
+---
+
+Claude Code [2026-09-29 03:07:27 PM]
+
+✅ Deploy is unblocked and live. The user re-saved Settings → Pages, which recreated `CNAME` = `weather.chiggi.net` (`9aafef8`) and restarted builds. Claude Code rebased two local commits onto it, corrected the CNAME docs in RULEBOOK.md, CLAUDE.md, and Table_of_Contents.md (`f39a20b`), and pushed.
+
+| Check | Result |
+|-------|--------|
+| Pages build `f39a20b` | ✅ Success, about 60 s |
+| GitHub origin | ✅ New `weather.js`, `weather-icons.js`, `dark-theme.css`, and `index.html` |
+| Cloudflare | ✅ Served new files; edge cache had expired and was refetched, so no purge was needed |
+| Live render at 1920x1080 | ✅ KRMG 82°F, 🌙 on night hours, container-scaled text, visible fullscreen icon, card borders |
+
+⚠️ A TV browser that loaded the old `weather.js` holds it for up to 4 h because of Cloudflare's browser TTL. Press Ctrl+F5 on the TV once.
+
+➡️ Codex next action: no open code task. Still open for the user: rotate the ToolArc token, and decide whether to fix icon accuracy at dusk and dawn (declined 2026-09-29, recorded only).
+
+---
