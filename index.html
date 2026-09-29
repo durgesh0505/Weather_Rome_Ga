@@ -88,6 +88,7 @@
             width: clamp(2.75rem, 5.5vw, 3.75rem);
             height: clamp(2.75rem, 5.5vw, 3.75rem);
             cursor: pointer;
+            color: var(--neu-text);
             font-size: clamp(1.2rem, 2.5vw, 1.75rem);
             box-shadow:
                 -6px -6px 12px var(--neu-light),
@@ -491,6 +492,63 @@
 
             #hourlyForecast, #dailyForecast {
                 gap: 0.15rem;
+            }
+        }
+
+        /* Container-driven text sizing (3-column layout only): text scales with its own card,
+           not the window, so large cards fill instead of leaving empty space.
+           Browsers without container query units ignore these and keep the clamp() sizes above. */
+        @media (min-width: 901px) {
+            .hourly-item, .daily-item, .current-card {
+                container-type: size;
+            }
+
+            .hourly-time {
+                font-size: min(26cqh, 8.4cqi);
+            }
+
+            .daily-day {
+                font-size: min(26cqh, 9.2cqi);
+            }
+
+            .daily-date {
+                font-size: min(16cqh, 5.7cqi);
+            }
+
+            .hourly-icon, .daily-icon {
+                font-size: min(40cqh, 12cqi);
+            }
+
+            .hourly-temp {
+                font-size: min(32cqh, 9.3cqi);
+            }
+
+            .daily-temps {
+                font-size: min(32cqh, 8.3cqi);
+            }
+
+            .precip-info {
+                font-size: min(17cqh, 6cqi);
+            }
+
+            .weather-icon {
+                font-size: min(21cqh, 22cqi);
+            }
+
+            .current-temp {
+                font-size: min(27cqh, 26cqi);
+            }
+
+            .feels-like {
+                font-size: min(7cqh, 6.5cqi);
+            }
+
+            .detail-label {
+                font-size: min(2.6cqh, 2.4cqi);
+            }
+
+            .detail-value {
+                font-size: min(8cqh, 7cqi);
             }
         }
 

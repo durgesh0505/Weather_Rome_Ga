@@ -16,6 +16,8 @@
 | Any size change: verify zero document overflow at 1920x1080, 1366x768, 1280x720 before claiming done | These three viewports are the established baseline in every findings doc |
 | Increasing text in one region: pay for it by shrinking spacing in that same region only | Global rescales destabilized center block; region-only pass worked (learn.md 13:34) |
 | Keep 5 hourly rows, 5 daily rows, 3-column layout unless user relaxes it | User locked these constraints; 2x–3x forecast text was rejected because it broke them |
+| Card text sizes use container units (`container-type: size` on `.hourly-item`, `.daily-item`, `.current-card`, ≥901px only) with the `clamp()` fallback kept; after any change, run a stress test with "12:00 PM", "100°F", "100° 100°" and check per-card `scrollWidth > clientWidth` | 2026-09-29: first cq pass looked fine on live data but overflowed hourly cards by up to 40 px with worst-case strings |
+| Buttons need an explicit `color`; text glyphs (`⛶`, `🗗`) otherwise render browser-default black | 2026-09-29: fullscreen icon invisible on the dark theme |
 
 ## Theme / color
 | Rule | Why |

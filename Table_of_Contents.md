@@ -53,3 +53,4 @@ Weather_App/
 | `projectdocs/opendesign-ui-analysis-task.md` | OpenDesign critique task tracker | Workflow rule |
 | `projectdocs/opendesign-ui-analysis-findings.md` | OD 5-dimension scores + Claude-verified/rejected findings | UI improvement backlog |
 | `projectdocs/ui-fixes-p0-p1-task.md` | 5 OD-confirmed fixes: night icons, KRMG obs, amber reduction, card borders, alert contrast + verification results | Change record |
+| `projectdocs/dynamic-text-fill-task.md` | Container-query text sizing + fullscreen icon color, final values + stress-test results | Change record |

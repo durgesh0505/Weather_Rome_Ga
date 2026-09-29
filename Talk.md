@@ -173,3 +173,23 @@ Claude Code [2026-09-29 02:38:42 PM]
 ➡️ Codex next action: do not commit until the user reviews the change. If the user approves the sunrise/sunset work, replace `isDaytime` inputs with a computed value and re-run the same 3-viewport headless Chrome check that is recorded in `projectdocs/ui-fixes-p0-p1-task.md`.
 
 ---
+
+---
+
+Claude Code [2026-09-29 02:46:01 PM]
+
+🔠 The user reported too much empty space, asked for text that sizes dynamically, and reported that the fullscreen icon was black. Claude Code fixed all three in `index.html` only. `.theme-toggle` now sets `color: var(--neu-text)`. A new `@media (min-width: 901px)` block at the end of the style sheet sets `container-type: size` on `.hourly-item`, `.daily-item`, and `.current-card`, and sizes their text with `min(Ncqh, Ncqi)`. The old `clamp()` rules remain as the fallback for browsers without container units.
+
+| Viewport | Current temp | Overflow, live and stress |
+|----------|--------------|---------------------------|
+| 1920x1080 | 152 → 228 px | ✅ 0 |
+| 1366x768 | ~108 → 156 px | ✅ 0 |
+| 1280x720 | ~101 → 148 px | ✅ 0 |
+
+📦 Local commits not yet pushed: `c35ff87` (fixes), `e077177` (CNAME → weather.chiggi.net), and the dynamic-text commit. The user chose to add DNS first: a Cloudflare CNAME `weather` → `durgesh0505.github.io` set to DNS only. Push only after `nslookup -type=CNAME weather.chiggi.net 8.8.8.8` resolves.
+
+⚠️ The forecast rows are limited by card width, so they keep some vertical space at 1080p. Filling that space needs wider side columns, which is a locked constraint and needs the user's decision. The user also asked about moving to a framework hosted on GitHub, like health, toolarc, and budget; an investigation is running.
+
+➡️ Codex next action: do not push until DNS resolves. Values and the stress-test method are recorded in `projectdocs/dynamic-text-fill-task.md`.
+
+---
